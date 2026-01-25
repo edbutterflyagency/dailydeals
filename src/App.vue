@@ -1,0 +1,121 @@
+<script setup>
+import { computed, onMounted } from 'vue';
+import SidebarNav from './components/SidebarNav.vue';
+import CompanyCard from './components/CompanyCard.vue';
+import GameSummary from './components/GameSummary.vue';
+import { useGameLogic } from './composables/useGameLogic';
+
+const { 
+  weeklyDeals,
+  currentDeal, 
+  currentIndex, 
+  results,
+  submitDecision, 
+  selectDeal,
+  isGameCompleted, // logic to determine if we show summary tab or button
+  score,
+  streak,
+  resetGame,
+  isLoading,
+  error,
+  loadDeals
+} = useGameLogic();
+
+onMounted(() => {
+  loadDeals();
+});
+</script>
+
+<template>
+  <div class="dashboard-container">
+    
+    <!-- Sidebar -->
+    <SidebarNav 
+      v-if="!isLoading && !error"
+      :deals="weeklyDeals"
+      :current-index="currentIndex"
+      :results="results"
+      @select-deal="selectDeal"
+    />
+
+    <main class="main-content">
+      
+      <!-- Loading / Error States -->
+      <div v-if="isLoading" class="center-msg">
+        <div class="spinner"></div>
+        <p>Chargement...</p>
+      </div>
+
+      <div v-else-if="error" class="center-msg">
+         <p class="text-danger">⚠️ {{ error }}</p>
+         <button class="btn btn-primary" @click="loadDeals">Réessayer</button>
+      </div>
+
+      <!-- Main View -->
+      <template v-else>
+        <!-- Card View -->
+        <div v-if="currentDeal" class="content-wrapper">
+           <CompanyCard 
+            :deal="currentDeal" 
+            @decision="submitDecision" 
+          />
+        </div>
+        
+        <div v-else class="center-msg">
+          <p>Sélectionnez un deal dans le menu.</p>
+        </div>
+      </template>
+
+    </main>
+  </div>
+</template>
+
+<style scoped>
+.dashboard-container {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  background-color: var(--bg-color);
+}
+
+.main-content {
+  flex: 1;
+  padding: 2rem;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.content-wrapper {
+  max-width: 900px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.center-msg {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  color: var(--text-secondary);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border-color);
+  border-top-color: var(--accent-primary);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.text-danger {
+  color: var(--danger);
+}
+</style>

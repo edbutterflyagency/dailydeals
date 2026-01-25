@@ -1,0 +1,231 @@
+1. Le concept central (inchangé, mais renforcé)
+Weekly Deal Challenge
+
+⏰ Envoi automatique chaque dimanche à 18h
+
+🎯 Mission claire : qualifier 5 comptes
+
+⌛ Temps cible : 10–15 minutes
+
+🔁 Renouvellement hebdomadaire
+
+🧠 Positionnement : aide à la décision, pas exécution CRM
+
+2. Header de la page : mise en contexte + preuve d’impact
+A. Titre
+
+Weekly Deal Challenge – Semaine #42
+
+B. Preuve d’impact immédiate (nouvelle section clé)
+
+Avant même de commencer :
+
+Impact de tes décisions passées
+
+✅ 2 comptes passés en “Engaged” il y a 3 semaines → 1 meeting obtenu
+
+🔄 L’action “Identifier décideur” sur Entreprise X a été lancée par Adrien
+
+📈 1 compte requalifié → intégré au pipe Q1
+
+➡️ Cette section change tout :
+le commercial voit que ses choix déclenchent des actions réelles.
+
+3. Pourquoi ces 5 entreprises ? (contextualisation dynamique)
+
+Juste sous le header, un encart :
+
+Pourquoi ces comptes cette semaine ?
+
+⏳ Aucun contact depuis 4 mois
+
+📢 Recrutement en cours détecté (LinkedIn)
+
+📊 Secteur en croissance (+12%)
+
+⚠️ Compte jamais qualifié
+
+➡️ Chaque entreprise aura 1 à 2 raisons visibles directement sur sa carte.
+
+4. Carte entreprise (UX orientée décision)
+A. Identité & scan rapide
+
+Nom + logo
+
+🌐 Site web
+
+🔗 LinkedIn entreprise
+
+B. Indicateurs clés (visuels)
+
+👥 Taille
+
+💰 CA
+
+🏷️ Catégories CRM (tags)
+
+⭐ Maturité estimée (ex : ★★★☆☆)
+
+C. Contacts existants
+
+Nom – Job title
+
+Dernier contact
+
+Icône LinkedIn
+
+Badge “No contact yet” si vide
+
+5. Le cœur de la gamification : décision + feedback en temps réel
+A. Choix du Business Status (obligatoire)
+
+Boutons clairs et distincts :
+
+🟢 Engaged
+
+🔵 Engaging
+
+🟡 To engage
+
+⚪ To be defined
+
+B. Feedback immédiat pendant la sélection (nouveau)
+
+Sous chaque option, affichage dynamique :
+
+Engaged
+→ Ajouté automatiquement à la prochaine réunion commerciale
+
+Engaging
+→ Suivi actif maintenu (pas de relance automatique)
+
+To engage
+→ Rappel programmé dans 2 semaines
+
+To be defined
+→ Aucune action déclenchée
+
+➡️ Le commercial comprend l’impact avant de cliquer, pas après.
+
+6. Action recommandée (friction minimale)
+Menu déroulant (au lieu du champ libre)
+
+Options proposées :
+
+Reprendre contact Q2
+
+Identifier décideur
+
+Surveiller recrutement
+
+Archiver (non prioritaire)
+
+Autre
+
+➡️ Sélection rapide
+➡️ Données propres
+➡️ Exploitables automatiquement
+
+7. Validation et feedback post-décision
+
+Après validation d’une carte :
+
+Animation légère (carte validée / disparaît)
+
+Message discret :
+
+“Décision enregistrée – action déclenchée”
+
+Progression visible : 3 / 5 traités
+
+8. Score et performance (sans infantilisation)
+A. Score hebdomadaire
+
++1 par entreprise qualifiée
+
++1 si action recommandée sélectionnée
+
+Bonus cohérence (pas tout en “To be defined”)
+
+Affichage :
+
+Score semaine : 7 / 10
+
+⏱️ Temps total : 11 min
+
+9. Streak utile (récompense tangible)
+A. Règle
+
+4 semaines consécutives complétées
+
+B. Récompense débloquée
+
+🎁 CRM Insights Report
+
+Top 10 comptes stratégiques (générés par IA)
+
+Basé sur :
+
+Décisions passées
+
+Signaux marché
+
+Activité LinkedIn
+
+Historique CRM
+
+➡️ Le streak donne accès à de l’intelligence, pas à un badge décoratif.
+
+10. Boucle de motivation long terme
+A. Historique léger
+
+Semaine
+
+Score
+
+Temps moyen
+
+B. Sentiment d’impact continu
+
+En bas de page :
+
+“Tes décisions ont déclenché 6 actions commerciales et 2 opportunités actives.”
+
+11. Automatisation (rappel essentiel)
+
+Lien unique par semaine
+
+Expire après validation des 5 comptes
+
+Synchronisation CRM :
+
+Business status
+
+Action recommandée
+
+Date
+
+Auteur
+
+Déclenchement automatique des workflows associés
+
+12. Résumé stratégique
+
+Tu ne gamifies pas une tâche.
+Tu ritualises une prise de décision stratégique, avec :
+
+preuve d’impact immédiate,
+
+contexte intelligent,
+
+feedback en temps réel,
+
+récompense réellement utile.
+
+Si tu veux la suite logique :
+
+wireframe précis (desktop/mobile),
+
+logique de sélection IA des 5 comptes,
+
+mapping exact entre statuts → workflows CRM.
