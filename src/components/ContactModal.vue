@@ -24,7 +24,7 @@ const formatDate = (dateStr) => {
 };
 
 const getAttioUrl = (id) => {
-  return `https://app.attio.com/butterfly/records/people/${id}`;
+  return `https://app.attio.com/butterflyagency/person/${id}`;
 };
 </script>
 

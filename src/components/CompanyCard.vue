@@ -54,6 +54,11 @@ const sortedContacts = computed(() => {
     return sA - sB;
   });
 });
+
+const attioUrl = computed(() => {
+  return `https://app.attio.com/butterflyagency/company/${props.deal.id}`;
+});
+
 const getGaugeInfo = (value, type) => {
   if (!value || value === "N/A") return { percent: 0, label: "N/A" };
   
@@ -126,6 +131,10 @@ const getGaugeInfo = (value, type) => {
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
           LinkedIn
         </a>
+        <a :href="attioUrl" target="_blank" class="btn link-btn attio-btn">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14.5v-9l6 4.5-6 4.5z"/></svg>
+          Attio
+        </a>
       </div>
     </div>
 
@@ -137,7 +146,7 @@ const getGaugeInfo = (value, type) => {
     <!-- Key Metrics Grid -->
     <div class="metrics-grid">
       <div class="metric-block">
-        <span class="label">Identity 🆔</span>
+        <span class="label">Identity</span>
         <div class="sub-metrics">
           <div class="sub-item gauge-item">
             <div class="sub-label-row">
@@ -179,7 +188,7 @@ const getGaugeInfo = (value, type) => {
       </div>
 
       <div class="metric-block">
-        <span class="label">Signals ⚡</span>
+        <span class="label">Signals</span>
         <div class="sub-metrics">
           <div class="sub-item events-item">
             <span class="sub-label">Événements</span>
@@ -196,7 +205,7 @@ const getGaugeInfo = (value, type) => {
       </div>
 
       <div class="metric-block contacts-block" v-if="deal.hasContact">
-        <span class="label">Contacts 👥</span>
+        <span class="label">Contacts</span>
         <div class="contacts-list">
           <div 
             v-for="contact in sortedContacts" 
@@ -376,10 +385,22 @@ const getGaugeInfo = (value, type) => {
   color: white !important;
   border: none;
   font-weight: 600;
+  transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.link-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  filter: brightness(1.1);
+}
+
+.link-btn:active {
+  transform: translateY(0);
 }
 
 .site-btn { background-color: var(--accent-primary); }
 .linkedin-btn { background-color: #0077b5; }
+.attio-btn { background-color: #000; }
 
 /* Sections */
 .info-section {
@@ -519,7 +540,7 @@ const getGaugeInfo = (value, type) => {
 
 .contact-card-inner.clickable {
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.25s cubic-bezier(0.23, 1, 0.32, 1);
   padding: 0.6rem;
   margin: -0.25rem;
   border-radius: var(--radius-md);
@@ -527,9 +548,10 @@ const getGaugeInfo = (value, type) => {
 }
 
 .contact-card-inner.clickable:hover {
-  background: #f8fafc;
-  border-color: var(--border-color);
-  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  background: white;
+  border-color: var(--accent-primary);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  transform: translateX(4px);
 }
 
 .contact-card-inner {

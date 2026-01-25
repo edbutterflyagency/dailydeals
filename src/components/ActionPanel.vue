@@ -14,7 +14,8 @@ const statuses = [
 ];
 
 const canValidate = computed(() => {
-  return !!selectedStatus.value;
+  // Toujours grisé pour le moment
+  return false;
 });
 
 const handleValidate = () => {
