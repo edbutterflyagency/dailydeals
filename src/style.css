@@ -19,6 +19,10 @@
   --warning: #f59e0b; /* Amber 500 */
   --danger: #ef4444; /* Red 500 */
 
+  --gradient-main: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  --gradient-gaming: linear-gradient(135deg, #3b82f6 0%, #2dd4bf 100%);
+  --glow-shadow: 0 0 20px rgba(99, 102, 241, 0.3);
+
   /* Spacing & Layout */
   --spacing-xs: 0.5rem;
   --spacing-sm: 1rem;
@@ -53,6 +57,15 @@ body {
   border: 1px solid var(--border-color);
   border-radius: var(--radius-md);
   box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.05); /* Subtle shadow */
+}
+
+.glass-panel {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
 }
 
 .text-muted {

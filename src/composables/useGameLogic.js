@@ -5,6 +5,7 @@ const weeklyDeals = ref([]);
 const currentIndex = ref(0);
 const results = ref([]);
 const streak = ref(3); 
+const isStarted = ref(false);
 const showSummary = ref(false);
 const isLoading = ref(true);
 const error = ref(null);
@@ -69,6 +70,11 @@ export function useGameLogic() {
     } 
     // We remove the auto-show summary logic to allow free navigation. 
     // Summary can be a separate tab or shown when all done.
+    if (results.value.length === weeklyDeals.value.length) {
+      setTimeout(() => {
+        showSummary.value = true;
+      }, 800);
+    }
   };
 
   const selectDeal = (index) => {
@@ -80,7 +86,12 @@ export function useGameLogic() {
      currentIndex.value = 0;
      results.value = [];
      showSummary.value = false;
+     isStarted.value = false;
      loadDeals(); 
+  };
+
+  const startChallenge = () => {
+    isStarted.value = true;
   };
 
   return {
@@ -92,11 +103,13 @@ export function useGameLogic() {
     streak,
     progress,
     isGameCompleted,
+    isStarted,
     isLoading,
     error,
     loadDeals,
     submitDecision,
     selectDeal,
-    resetGame
+    resetGame,
+    startChallenge
   };
 }

@@ -49,8 +49,11 @@ defineEmits(['restart']);
       “Tes décisions ont déclenché 6 actions commerciales et 2 opportunités actives.”
     </div>
 
-    <!-- Restart (Debug/Demo purposes) -->
-    <!-- <button @click="$emit('restart')" style="margin-top: 2rem; opacity: 0.5;">Restart Demo</button> -->
+    <div class="summary-footer">
+      <button class="btn btn-primary restart-btn" @click="$emit('restart')">
+        Nouveau Challenge 🚀
+      </button>
+    </div>
   </div>
 </template>
 
@@ -76,6 +79,7 @@ defineEmits(['restart']);
   margin: 0 0 0.5rem 0;
   background: var(--gradient-main);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 

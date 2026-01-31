@@ -3,6 +3,7 @@ import { computed, onMounted } from 'vue';
 import SidebarNav from './components/SidebarNav.vue';
 import CompanyCard from './components/CompanyCard.vue';
 import GameSummary from './components/GameSummary.vue';
+import StartScreen from './components/StartScreen.vue';
 import { useGameLogic } from './composables/useGameLogic';
 
 const { 
@@ -12,7 +13,9 @@ const {
   results,
   submitDecision, 
   selectDeal,
-  isGameCompleted, // logic to determine if we show summary tab or button
+  isGameCompleted,
+  isStarted,
+  startChallenge,
   score,
   streak,
   resetGame,
@@ -31,7 +34,7 @@ onMounted(() => {
     
     <!-- Sidebar -->
     <SidebarNav 
-      v-if="!isLoading && !error"
+      v-if="!isLoading && !error && isStarted"
       :deals="weeklyDeals"
       :current-index="currentIndex"
       :results="results"
@@ -53,8 +56,26 @@ onMounted(() => {
 
       <!-- Main View -->
       <template v-else>
+        <!-- Start Screen -->
+        <StartScreen 
+          v-if="!isStarted && !isGameCompleted" 
+          :deal-count="weeklyDeals.length" 
+          :streak="streak"
+          @start="startChallenge"
+        />
+
+        <!-- Game Summary -->
+        <div v-else-if="isGameCompleted" class="content-wrapper">
+          <GameSummary 
+            :score="score" 
+            :streak="streak" 
+            :total="weeklyDeals.length"
+            @restart="resetGame"
+          />
+        </div>
+
         <!-- Card View -->
-        <div v-if="currentDeal" class="content-wrapper">
+        <div v-else-if="currentDeal" class="content-wrapper">
            <CompanyCard 
             :deal="currentDeal" 
             @decision="submitDecision" 

@@ -126,5 +126,12 @@ export const dealService = {
         color: contextColor
       }
     };
+  },
+
+  async updateBusinessStatus(companyId, status) {
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
+    console.log(`Updated company ${companyId} status to ${status}`);
+    return { success: true };
   }
 };
