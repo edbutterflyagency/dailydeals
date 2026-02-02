@@ -11,10 +11,14 @@ defineProps({
   results: {
     type: Array,
     required: true
+  },
+  isMobileOpen: {
+    type: Boolean,
+    default: false
   }
 });
 
-defineEmits(['select-deal']);
+defineEmits(['select-deal', 'close']);
 
 const isProcessed = (dealId, results) => {
   return results.some(r => r.dealId === dealId);
@@ -22,7 +26,7 @@ const isProcessed = (dealId, results) => {
 </script>
 
 <template>
-  <aside class="sidebar">
+  <aside class="sidebar" :class="{ 'mobile-open': isMobileOpen }">
     <div class="sidebar-header">
       <div class="logo-area">
         <span class="logo-icon">🦋</span>
@@ -215,5 +219,37 @@ const isProcessed = (dealId, results) => {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    transform: translateX(-100%);
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    box-shadow: none;
+    width: 280px;
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .sidebar-header {
+    margin-top: 0.5rem;
+  }
+
+  .nav-item {
+    padding: 1rem;
+  }
+
+  .company-name {
+    font-size: 1rem;
+  }
 }
 </style>

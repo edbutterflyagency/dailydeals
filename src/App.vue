@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import SidebarNav from './components/SidebarNav.vue';
 import CompanyCard from './components/CompanyCard.vue';
 import GameSummary from './components/GameSummary.vue';
@@ -24,6 +24,22 @@ const {
   loadDeals
 } = useGameLogic();
 
+// Mobile menu state
+const isMobileMenuOpen = ref(false);
+
+const toggleMobileMenu = () => {
+  isMobileMenuOpen.value = !isMobileMenuOpen.value;
+};
+
+const closeMobileMenu = () => {
+  isMobileMenuOpen.value = false;
+};
+
+const handleSelectDeal = (index) => {
+  selectDeal(index);
+  closeMobileMenu();
+};
+
 onMounted(() => {
   loadDeals();
 });
@@ -32,13 +48,37 @@ onMounted(() => {
 <template>
   <div class="dashboard-container">
     
+    <!-- Mobile Menu Toggle -->
+    <button 
+      v-if="!isLoading && !error && isStarted"
+      class="mobile-menu-toggle"
+      @click="toggleMobileMenu"
+      aria-label="Menu"
+    >
+      <svg v-if="!isMobileMenuOpen" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+      <svg v-else xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Mobile Overlay -->
+    <div 
+      class="mobile-overlay" 
+      :class="{ visible: isMobileMenuOpen }"
+      @click="closeMobileMenu"
+    ></div>
+
     <!-- Sidebar -->
     <SidebarNav 
       v-if="!isLoading && !error && isStarted"
       :deals="weeklyDeals"
       :current-index="currentIndex"
       :results="results"
-      @select-deal="selectDeal"
+      :is-mobile-open="isMobileMenuOpen"
+      @select-deal="handleSelectDeal"
+      @close="closeMobileMenu"
     />
 
     <main class="main-content">
@@ -138,5 +178,30 @@ onMounted(() => {
 
 .text-danger {
   color: var(--danger);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .dashboard-container {
+    flex-direction: column;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .main-content {
+    padding: 1rem;
+    padding-top: 4.5rem; /* Space for mobile header */
+  }
+
+  .content-wrapper {
+    max-width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-content {
+    padding: 0.75rem;
+    padding-top: 4rem;
+  }
 }
 </style>

@@ -526,4 +526,174 @@ const isFrance = computed(() => props.deal.countryCode === 'FR');
 .decision-area {
   padding: 1.5rem 2rem;
 }
+
+/* ========================================
+   MOBILE RESPONSIVE STYLES
+   ======================================== */
+@media (max-width: 768px) {
+  .company-card {
+    border-radius: 16px;
+    margin: 0 -0.5rem;
+  }
+
+  .card-header {
+    flex-direction: column;
+    padding: 1.25rem;
+    gap: 1rem;
+  }
+
+  .brand-section {
+    width: 100%;
+  }
+
+  .company-logo {
+    width: 48px;
+    height: 48px;
+    border-radius: 10px;
+  }
+
+  .company-name {
+    font-size: 1.3rem;
+  }
+
+  .tagline {
+    font-size: 0.85rem;
+  }
+
+  .links-group {
+    width: 100%;
+    justify-content: stretch;
+  }
+
+  .link-btn {
+    flex: 1;
+    padding: 0.6rem 0.75rem;
+    font-size: 0.8rem;
+    justify-content: center;
+  }
+
+  .link-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* Metrics - Stack on mobile */
+  .metrics-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .metric-card {
+    padding: 1rem 1.25rem;
+  }
+
+  .metric-icon {
+    font-size: 1.25rem;
+  }
+
+  .metric-value {
+    font-size: 1rem;
+  }
+
+  /* Warning */
+  .warning-banner {
+    padding: 0.75rem 1.25rem;
+    font-size: 0.8rem;
+  }
+
+  /* Details */
+  .details-toggle {
+    padding: 0.75rem 1.25rem;
+  }
+
+  .details-section {
+    padding: 1rem 1.25rem;
+  }
+
+  .details-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
+  }
+
+  /* Contacts */
+  .contact-item {
+    padding: 0.5rem 0.5rem;
+  }
+
+  .contact-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.8rem;
+  }
+
+  .contact-name {
+    font-size: 0.85rem;
+  }
+
+  .contact-title {
+    font-size: 0.7rem;
+  }
+
+  .strength-tag {
+    font-size: 0.6rem;
+    padding: 2px 6px;
+  }
+
+  /* Decision Area */
+  .decision-area {
+    padding: 1.25rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .company-card {
+    border-radius: 12px;
+  }
+
+  .card-header {
+    padding: 1rem;
+  }
+
+  .company-logo {
+    width: 44px;
+    height: 44px;
+  }
+
+  .company-name {
+    font-size: 1.15rem;
+  }
+
+  .country-flag {
+    font-size: 1.1rem;
+  }
+
+  .links-group {
+    flex-wrap: wrap;
+  }
+
+  .link-btn {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: 0;
+  }
+
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .events-chips {
+    gap: 0.3rem;
+  }
+
+  .event-chip {
+    font-size: 0.7rem;
+    padding: 3px 8px;
+  }
+
+  .contacts-list {
+    gap: 0.3rem;
+  }
+
+  .decision-area {
+    padding: 1rem;
+  }
+}
 </style>

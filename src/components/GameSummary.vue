@@ -206,4 +206,113 @@ defineEmits(['restart']);
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0); }
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .summary-container {
+    padding: 1.5rem;
+    border-radius: 20px;
+  }
+
+  .header {
+    margin-bottom: 1.5rem;
+  }
+
+  .trophy {
+    font-size: 3rem;
+  }
+
+  .header h2 {
+    font-size: 1.6rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+  }
+
+  .score-card {
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .score-value {
+    font-size: 2.5rem;
+  }
+
+  .total {
+    font-size: 1.25rem;
+  }
+
+  .streak-section {
+    margin-bottom: 1.5rem;
+  }
+
+  .reward-box {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .reward-icon {
+    font-size: 2rem;
+  }
+
+  .reward-content h3 {
+    font-size: 1rem;
+  }
+
+  .reward-content p {
+    font-size: 0.85rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .footer-msg {
+    max-width: 100%;
+    font-size: 0.85rem;
+  }
+
+  .restart-btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .summary-container {
+    padding: 1.25rem;
+    border-radius: 16px;
+  }
+
+  .trophy {
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .header h2 {
+    font-size: 1.4rem;
+  }
+
+  .score-value {
+    font-size: 2rem;
+  }
+
+  .total {
+    font-size: 1rem;
+  }
+
+  .streak-header {
+    font-size: 0.9rem;
+  }
+
+  .reward-box {
+    padding: 1rem;
+  }
+
+  .download-btn {
+    width: 100%;
+  }
+}
 </style>

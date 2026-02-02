@@ -254,4 +254,96 @@ const getAttioUrl = (id) => {
 
 .fade-enter-active, .fade-leave-active { transition: opacity 0.2s ease; }
 .fade-enter-from, .fade-leave-to { opacity: 0; }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 1rem;
+    align-items: flex-end;
+  }
+
+  .modal-content {
+    width: 100%;
+    max-width: 100%;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 20px 20px 0 0;
+    margin-bottom: 0;
+  }
+
+  .modal-header {
+    padding: 1.25rem 1.5rem;
+    position: sticky;
+    top: 0;
+    background: white;
+    z-index: 1;
+  }
+
+  .header-main {
+    gap: 1rem;
+  }
+
+  .modal-avatar,
+  .modal-avatar-placeholder {
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    font-size: 1.5rem;
+  }
+
+  .header-text h3 {
+    font-size: 1.1rem;
+  }
+
+  .header-text .title {
+    font-size: 0.85rem;
+  }
+
+  .modal-body {
+    padding: 1.5rem;
+  }
+
+  .info-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .interaction-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.875rem;
+  }
+
+  .links-actions {
+    gap: 0.5rem;
+  }
+
+  .btn {
+    padding: 0.75rem 1rem;
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .modal-header {
+    padding: 1rem 1.25rem;
+  }
+
+  .modal-avatar,
+  .modal-avatar-placeholder {
+    width: 48px;
+    height: 48px;
+    font-size: 1.3rem;
+  }
+
+  .modal-body {
+    padding: 1.25rem;
+  }
+
+  .close-btn {
+    font-size: 1.75rem;
+  }
+}
 </style>

@@ -207,4 +207,107 @@ defineEmits(['start']);
   50% { transform: scale(1.03); }
   100% { transform: scale(1); }
 }
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .start-screen {
+    padding: 1.5rem;
+    min-height: 100vh;
+    justify-content: center;
+  }
+
+  .glow-circle {
+    width: 250px;
+    height: 250px;
+  }
+
+  .content {
+    max-width: 100%;
+  }
+
+  .streak-badge {
+    margin-bottom: 1.5rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .title {
+    font-size: 2.25rem;
+  }
+
+  .subtitle {
+    font-size: 1.1rem;
+    margin: 0.75rem 0 2rem;
+  }
+
+  .challenge-box {
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+    border-radius: 20px;
+  }
+
+  .objective {
+    gap: 1rem;
+  }
+
+  .count-bubble {
+    width: 50px;
+    height: 50px;
+    font-size: 1.5rem;
+    border-radius: 16px;
+  }
+
+  .text strong {
+    font-size: 1.1rem;
+  }
+
+  .text span {
+    font-size: 0.85rem;
+  }
+
+  .start-btn {
+    padding: 1rem 2.5rem;
+    font-size: 1.25rem;
+    width: 100%;
+    max-width: 300px;
+  }
+
+  .hint {
+    margin-top: 1.5rem;
+    font-size: 0.85rem;
+    padding: 0 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .start-screen {
+    padding: 1rem;
+  }
+
+  .title {
+    font-size: 1.85rem;
+  }
+
+  .subtitle {
+    font-size: 1rem;
+    margin: 0.5rem 0 1.5rem;
+  }
+
+  .challenge-box {
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .count-bubble {
+    width: 44px;
+    height: 44px;
+    font-size: 1.3rem;
+    border-radius: 12px;
+  }
+
+  .start-btn {
+    padding: 0.9rem 2rem;
+    font-size: 1.1rem;
+  }
+}
 </style>
