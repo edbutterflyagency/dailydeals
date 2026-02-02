@@ -1,6 +1,5 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
-import { dealService } from '../services/dealService';
+import { computed } from 'vue';
 
 const props = defineProps({
   dealId: {
@@ -11,108 +10,42 @@ const props = defineProps({
 
 const emit = defineEmits(['decision-made']);
 
-const isOpen = ref(false);
-const selectedId = ref(null);
-const isUpdating = ref(false);
-const showSuccess = ref(false);
-
-const statuses = [
-  { id: 'engaged', label: 'Engaged', color: '#10b981', icon: '🤝' },
-  { id: 'engaging', label: 'Engaging', color: '#6366f1', icon: '⚡' },
-  { id: 'to_engage', label: 'To engage', color: '#f59e0b', icon: '🎯' },
-  { id: 'tbd', label: 'To be defined', color: '#94a3b8', icon: '❓' },
-  { id: 'dq', label: 'DQ', color: '#ef4444', icon: '🚫' }
-];
-
-const selectedItem = computed(() => {
-  return statuses.find(s => s.id === selectedId.value) || { label: 'Choisir un statut...', color: '#94a3b8' };
+const attioUrl = computed(() => {
+  return `https://app.attio.com/butterflyagency/company/${props.dealId}`;
 });
 
-const toggleDropdown = () => {
-  if (isUpdating.value) return;
-  isOpen.value = !isOpen.value;
+const openAttio = () => {
+  window.open(attioUrl.value, '_blank');
+  emit('decision-made', { status: 'opened_attio' });
 };
-
-const selectStatus = async (status) => {
-  selectedId.value = status.id;
-  isOpen.value = false;
-  
-  isUpdating.value = true;
-  try {
-    await dealService.updateBusinessStatus(props.dealId, status.id);
-    showSuccess.value = true;
-    setTimeout(() => { showSuccess.value = false; }, 3000);
-    emit('decision-made', { status: status.id });
-  } catch (err) {
-    console.error(err);
-  } finally {
-    isUpdating.value = false;
-  }
-};
-
-// Close on outside click
-const closeDropdown = (e) => {
-  if (!e.target.closest('.modern-select-container')) {
-    isOpen.value = false;
-  }
-};
-
-onMounted(() => window.addEventListener('click', closeDropdown));
-onUnmounted(() => window.removeEventListener('click', closeDropdown));
 </script>
 
 <template>
   <div class="action-panel-refactored">
     <div class="action-card">
-      <div class="card-glow"></div>
       <div class="action-header">
         <label class="section-label">Business Status</label>
-        <div class="action-badge">Action Finale</div>
+        <div class="action-badge disabled-badge">Non connecté</div>
       </div>
       
-      <div class="modern-select-container">
-        <!-- Main Toggle -->
-        <div 
-          class="dropdown-toggle" 
-          :class="{ open: isOpen, updating: isUpdating, success: showSuccess }"
-          @click="toggleDropdown"
-        >
-          <div class="selected-content">
-            <span v-if="isUpdating" class="spinner"></span>
-            <span v-else-if="showSuccess" class="success-icon">✓</span>
-            <template v-else>
-               <span v-if="selectedId" class="status-icon">{{ selectedItem.icon }}</span>
-               <span class="label-text" :style="{ color: selectedId ? 'var(--text-primary)' : '#94a3b8' }">
-                 {{ selectedId ? selectedItem.label : 'Qualifier le deal...' }}
-               </span>
-            </template>
-          </div>
-          <span class="chevron" :class="{ rotated: isOpen }">⌄</span>
-        </div>
-
-        <!-- Dropdown Menu (Opens Upwards) -->
-        <Transition name="slide-up">
-          <div v-if="isOpen" class="dropdown-menu">
-            <div 
-              v-for="status in statuses" 
-              :key="status.id"
-              class="menu-item"
-              :class="{ selected: selectedId === status.id }"
-              @click="selectStatus(status)"
-            >
-              <div class="item-visual" :style="{ background: status.color + '20', color: status.color }">
-                {{ status.icon }}
-              </div>
-              <span class="item-label">{{ status.label }}</span>
-              <span v-if="selectedId === status.id" class="check">✓</span>
-            </div>
-          </div>
-        </Transition>
+      <!-- Disabled message -->
+      <div class="disabled-notice">
+        <div class="notice-icon">⚠️</div>
+        <p class="notice-text">
+          L'enregistrement n'est pas encore connecté au CRM. 
+          Pour modifier le statut de ce deal, veuillez effectuer la modification directement sur Attio.
+        </p>
       </div>
 
-      <div v-if="showSuccess" class="success-toast">
-        Statut mis à jour avec succès
-      </div>
+      <!-- Attio Button -->
+      <a :href="attioUrl" target="_blank" class="attio-btn" @click="openAttio">
+        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+          <polyline points="15 3 21 3 21 9"/>
+          <line x1="10" y1="14" x2="21" y2="3"/>
+        </svg>
+        Modifier sur Attio
+      </a>
     </div>
   </div>
 </template>
@@ -140,8 +73,6 @@ onUnmounted(() => window.removeEventListener('click', closeDropdown));
 }
 
 .action-badge {
-  background: var(--accent-soft);
-  color: var(--accent-primary);
   font-size: 0.65rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -150,168 +81,75 @@ onUnmounted(() => window.removeEventListener('click', closeDropdown));
   letter-spacing: 0.05em;
 }
 
+.disabled-badge {
+  background: #fef3c7;
+  color: #92400e;
+}
+
 .section-label {
   font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
-  color: #1e293b;
+  color: #64748b;
   letter-spacing: 0.05em;
 }
 
-.modern-select-container {
-  position: relative;
-  width: 100%;
-}
-
-.dropdown-toggle {
+/* Disabled Notice */
+.disabled-notice {
   background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  padding: 0.5rem 1rem;
+  border: 1px dashed #cbd5e1;
   border-radius: 12px;
-  cursor: pointer;
+  padding: 1rem;
+  margin-bottom: 1rem;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
-  min-height: 44px;
-}
-
-.dropdown-toggle:hover {
-  border-color: var(--accent-primary);
-  background: white;
-}
-
-.dropdown-toggle.open {
-  border-color: var(--accent-primary);
-  background: white;
-  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-}
-
-.dropdown-toggle.updating {
-  background: #f8fafc;
-  cursor: wait;
-}
-
-.dropdown-toggle.success {
-  border-color: #10b981;
-  background: #f0fdf4;
-}
-
-.selected-content {
-  display: flex;
-  align-items: center;
   gap: 0.75rem;
-  font-weight: 600;
-  color: var(--text-primary);
-  font-size: 0.95rem;
+  align-items: flex-start;
 }
 
-.chevron {
-  font-size: 1rem;
-  color: #94a3b8;
-  transition: transform 0.2s;
+.notice-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+  flex-shrink: 0;
 }
 
-.chevron.rotated {
-  transform: rotate(180deg);
+.notice-text {
+  margin: 0;
+  font-size: 0.875rem;
+  color: #64748b;
+  line-height: 1.5;
 }
 
-.dropdown-menu {
-  position: absolute;
-  bottom: calc(100% + 8px);
-  left: 0;
-  width: 100%;
-  background: white;
-  border-radius: 16px;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 -10px 25px -5px rgba(0,0,0,0.1);
-  z-index: 1000;
-  padding: 0.5rem;
-  overflow: hidden;
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.6rem 0.75rem;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.15s;
-}
-
-.menu-item:hover {
-  background: #f1f5f9;
-}
-
-.menu-item.selected {
-  background: #eff6ff;
-}
-
-.item-visual {
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+/* Attio Button */
+.attio-btn {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
-}
-
-.item-label {
-  flex: 1;
-  font-weight: 600;
-  color: #1e293b;
-  font-size: 0.95rem;
-}
-
-.check {
-  color: #3b82f6;
-  font-weight: 900;
-}
-
-/* Spinner */
-.spinner {
-  width: 18px;
-  height: 18px;
-  border: 2px solid #e2e8f0;
-  border-top-color: #6366f1;
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-}
-
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.success-icon {
-  color: #10b981;
-  font-weight: 900;
-  font-size: 1.1rem;
-}
-
-.success-toast {
-  position: absolute;
-  bottom: -40px;
-  left: 0;
-  color: #059669;
-  font-size: 0.85rem;
-  font-weight: 600;
-  animation: fadeIn 0.3s ease;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(-5px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-/* Transitions */
-.slide-up-enter-active, .slide-up-leave-active {
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.875rem 1.25rem;
+  background: #1e293b;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
   transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
-.slide-up-enter-from, .slide-up-leave-to {
-  opacity: 0;
-  transform: translateY(10px);
+
+.attio-btn:hover {
+  background: #334155;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px -4px rgba(30, 41, 59, 0.3);
+}
+
+.attio-btn:active {
+  transform: translateY(0);
+}
+
+.attio-btn svg {
+  flex-shrink: 0;
 }
 
 /* Mobile Responsive */
@@ -334,32 +172,23 @@ onUnmounted(() => window.removeEventListener('click', closeDropdown));
     padding: 2px 6px;
   }
 
-  .dropdown-toggle {
-    min-height: 48px;
-    border-radius: 10px;
-  }
-
-  .selected-content {
-    font-size: 0.9rem;
+  .disabled-notice {
+    padding: 0.875rem;
     gap: 0.5rem;
   }
 
-  .dropdown-menu {
-    border-radius: 14px;
+  .notice-icon {
+    font-size: 1.1rem;
   }
 
-  .menu-item {
-    padding: 0.75rem;
+  .notice-text {
+    font-size: 0.8rem;
   }
 
-  .item-visual {
-    width: 28px;
-    height: 28px;
-    font-size: 1rem;
-  }
-
-  .item-label {
-    font-size: 0.9rem;
+  .attio-btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.95rem;
+    border-radius: 10px;
   }
 }
 
@@ -369,13 +198,14 @@ onUnmounted(() => window.removeEventListener('click', closeDropdown));
     border-radius: 14px;
   }
 
-  .dropdown-toggle {
-    padding: 0.6rem 0.875rem;
+  .disabled-notice {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.5rem;
   }
 
-  .menu-item {
-    padding: 0.6rem;
-    gap: 0.5rem;
+  .attio-btn {
+    padding: 0.875rem;
   }
 }
 </style>
