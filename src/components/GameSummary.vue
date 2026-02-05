@@ -22,18 +22,6 @@ defineEmits(['restart']);
       <div class="score-value">{{ score }} <span class="total">/ {{ total * 2 }}</span></div>
     </div>
 
-    <!-- Streak Section -->
-    <div class="streak-section">
-      <div class="streak-header">
-        <span>Série active</span>
-        <span class="streak-count">{{ streak }} semaines 🔥</span>
-      </div>
-      <div class="progress-bar">
-        <div class="progress-fill" style="width: 100%"></div>
-      </div>
-      <p class="streak-msg">4 semaines consécutives ! Récompense débloquée.</p>
-    </div>
-
     <!-- Reward Unlock -->
     <div class="reward-box">
       <div class="reward-icon">🎁</div>

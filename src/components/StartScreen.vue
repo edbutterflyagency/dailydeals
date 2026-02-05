@@ -23,11 +23,6 @@ defineEmits(['start']);
     </div>
 
     <div class="content">
-      <div class="streak-badge">
-        <span class="fire">🔥</span>
-        <span class="count">{{ streak }} jours consécutifs</span>
-      </div>
-
       <h1 class="title">Challenge du Jour</h1>
       <p class="subtitle">T'es prêt à exploser tes quotas ?</p>
 
