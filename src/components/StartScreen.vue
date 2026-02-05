@@ -38,8 +38,6 @@ defineEmits(['start']);
       <button class="start-btn pulse" @click="$emit('start')">
         C'est parti ! 🚀
       </button>
-
-      <p class="hint">Plus que 2 challenges pour atteindre ton record de la semaine.</p>
     </div>
   </div>
 </template>
