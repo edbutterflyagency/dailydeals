@@ -1,7 +1,7 @@
 import { weeklyDeals as mockDeals } from '../data/deals';
 
 const API_URL = 'https://lamp.butterflyagency.io/api/companies/deals';
-const STATUS_CHECK_URL = 'https://lamp.butterflyagency.io/webhook/daily-deals/check-status';
+const STATUS_CHECK_URL = 'https://flows.butterflyagency.io/webhook/daily-deals/check-status';
 
 // Helper to safely extract value from Attio's array structure
 const getAttioValue = (values, key, type = 'text') => {
