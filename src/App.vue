@@ -41,6 +41,13 @@ const handleSelectDeal = (index) => {
   closeMobileMenu();
 };
 
+// Get current deal's status from results
+const currentDealStatus = computed(() => {
+  if (!currentDeal.value) return null;
+  const result = results.value.find(r => r.dealId === currentDeal.value.id);
+  return result?.status || null;
+});
+
 onMounted(() => {
   loadDeals();
 });
@@ -118,7 +125,8 @@ onMounted(() => {
         <!-- Card View -->
         <div v-else-if="currentDeal" class="content-wrapper">
            <CompanyCard 
-            :deal="currentDeal" 
+            :deal="currentDeal"
+            :current-status="currentDealStatus"
             @decision="submitDecision" 
           />
         </div>

@@ -1,17 +1,20 @@
 <script setup>
-import { ref, computed, onMounted, onUnmounted } from 'vue';
+import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
   dealId: {
     type: String,
     required: true
+  },
+  currentStatus: {
+    type: String,
+    default: null
   }
 });
 
 const emit = defineEmits(['decision-made']);
 
 const isOpen = ref(false);
-const selectedId = ref(null);
 
 const statuses = [
   { id: 'engaged', label: 'Engaged', color: '#10b981', icon: '🤝' },
@@ -20,6 +23,23 @@ const statuses = [
   { id: 'tbd', label: 'To be defined', color: '#94a3b8', icon: '❓' },
   { id: 'dq', label: 'DQ', color: '#ef4444', icon: '🚫' }
 ];
+
+// Map Attio status to our ID format
+const attioToId = {
+  'engaged': 'engaged',
+  'engaging': 'engaging',
+  'to engage': 'to_engage',
+  'tbd': 'tbd',
+  'dq': 'dq'
+};
+
+// Initialize from prop or null
+const selectedId = ref(props.currentStatus ? attioToId[props.currentStatus.toLowerCase()] || null : null);
+
+// Watch for prop changes (when switching deals)
+watch(() => props.currentStatus, (newStatus) => {
+  selectedId.value = newStatus ? attioToId[newStatus.toLowerCase()] || null : null;
+});
 
 const selectedItem = computed(() => {
   return statuses.find(s => s.id === selectedId.value) || { label: 'Choisir un statut...', color: '#94a3b8' };

@@ -7,6 +7,10 @@ const props = defineProps({
   deal: {
     type: Object,
     required: true
+  },
+  currentStatus: {
+    type: String,
+    default: null
   }
 });
 
@@ -173,7 +177,7 @@ const isFrance = computed(() => props.deal.countryCode === 'FR');
 
     <!-- Decision Area -->
     <div class="decision-area">
-      <ActionPanel :deal-id="deal.id" @decision-made="onDecision" />
+      <ActionPanel :deal-id="deal.id" :current-status="currentStatus" @decision-made="onDecision" />
     </div>
 
     <ContactModal
