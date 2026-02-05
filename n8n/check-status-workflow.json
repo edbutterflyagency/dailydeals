@@ -1,0 +1,89 @@
+{
+  "name": "Daily Deals - Check Attio Status",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "daily-deals/check-status",
+        "responseMode": "responseNode",
+        "options": {
+          "rawBody": false
+        }
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300],
+      "webhookId": "daily-deals-check-status"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Receive company IDs from request\nconst companyIds = $input.first().json.body?.companyIds || $input.first().json.companyIds || [];\n\n// Return items for batch processing\nreturn companyIds.map(id => ({ json: { companyId: id } }));"
+      },
+      "id": "parse-ids",
+      "name": "Parse IDs",
+      "type": "n8n-nodes-base.code",
+      "position": [450, 300]
+    },
+    {
+      "parameters": {
+        "method": "GET",
+        "url": "=https://api.attio.com/v2/objects/companies/records/{{ $json.companyId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "options": {}
+      },
+      "id": "attio-get",
+      "name": "Get Attio Record",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [650, 300],
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "attio-api",
+          "name": "Attio API"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Collect all results and extract business status\nconst results = $input.all().map(item => {\n  const companyId = item.json.companyId || item.json.data?.id?.record_id;\n  const values = item.json.data?.values || {};\n  \n  // Extract business_status from Attio\n  const statusField = values.business_status || values.status || [];\n  const status = statusField[0]?.option?.title || null;\n  \n  // Check if already categorized (has a status that's not null/empty/TBD)\n  const categorizedStatuses = ['Engaged', 'Engaging', 'To engage', 'DQ'];\n  const isProcessed = status && categorizedStatuses.includes(status);\n  \n  return {\n    companyId,\n    status,\n    isProcessed\n  };\n});\n\nreturn [{ json: { statuses: results } }];"
+      },
+      "id": "aggregate",
+      "name": "Aggregate Results",
+      "type": "n8n-nodes-base.code",
+      "position": [850, 300]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}"
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [1050, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Parse IDs", "type": "main", "index": 0 }]]
+    },
+    "Parse IDs": {
+      "main": [[{ "node": "Get Attio Record", "type": "main", "index": 0 }]]
+    },
+    "Get Attio Record": {
+      "main": [[{ "node": "Aggregate Results", "type": "main", "index": 0 }]]
+    },
+    "Aggregate Results": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "staticData": null,
+  "tags": [],
+  "triggerCount": 0,
+  "pinData": {}
+}

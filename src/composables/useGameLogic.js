@@ -16,8 +16,32 @@ export function useGameLogic() {
     isLoading.value = true;
     error.value = null;
     try {
+      // 1. Fetch deals from API
       const data = await dealService.fetchDeals();
       weeklyDeals.value = data;
+
+      // 2. Check Attio statuses for all deals
+      if (data.length > 0) {
+        const companyIds = data.map(deal => deal.id);
+        const statusData = await dealService.checkAttioStatuses(companyIds);
+        
+        // 3. Mark already-categorized deals as processed
+        if (statusData.statuses && statusData.statuses.length > 0) {
+          statusData.statuses.forEach(item => {
+            if (item.isProcessed && item.status) {
+              // Add to results as already done
+              const existingIndex = results.value.findIndex(r => r.dealId === item.companyId);
+              if (existingIndex < 0) {
+                results.value.push({
+                  dealId: item.companyId,
+                  status: item.status,
+                  fromAttio: true // Flag to indicate this came from Attio
+                });
+              }
+            }
+          });
+        }
+      }
     } catch (e) {
       error.value = "Impossible de charger les deals.";
       console.error(e);

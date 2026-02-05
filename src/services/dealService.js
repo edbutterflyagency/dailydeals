@@ -1,6 +1,7 @@
 import { weeklyDeals as mockDeals } from '../data/deals';
 
 const API_URL = 'https://lamp.butterflyagency.io/api/companies/deals';
+const STATUS_CHECK_URL = 'https://lamp.butterflyagency.io/webhook/daily-deals/check-status';
 
 // Helper to safely extract value from Attio's array structure
 const getAttioValue = (values, key, type = 'text') => {
@@ -133,5 +134,32 @@ export const dealService = {
     await new Promise(resolve => setTimeout(resolve, 1500));
     console.log(`Updated company ${companyId} status to ${status}`);
     return { success: true };
+  },
+
+  /**
+   * Check Attio statuses for a list of company IDs
+   * Returns which companies are already categorized
+   */
+  async checkAttioStatuses(companyIds) {
+    try {
+      const response = await fetch(STATUS_CHECK_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ companyIds })
+      });
+
+      if (!response.ok) {
+        console.warn('Status check failed, assuming none processed');
+        return { statuses: [] };
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('Failed to check Attio statuses:', error);
+      return { statuses: [] };
+    }
   }
 };
