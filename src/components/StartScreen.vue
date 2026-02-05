@@ -36,7 +36,6 @@ defineEmits(['start']);
           <div class="count-bubble">{{ dealCount }}</div>
           <div class="text">
             <strong>Deals à qualifier</strong>
-            <span>Temps estimé : 3 min</span>
           </div>
         </div>
       </div>

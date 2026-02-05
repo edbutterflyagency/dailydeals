@@ -20,7 +20,6 @@ defineEmits(['restart']);
     <div class="score-card">
       <div class="score-label">Score Semaine</div>
       <div class="score-value">{{ score }} <span class="total">/ {{ total * 2 }}</span></div>
-      <div class="score-meta">⏱️ Temps total: 11 min</div>
     </div>
 
     <!-- Streak Section -->
