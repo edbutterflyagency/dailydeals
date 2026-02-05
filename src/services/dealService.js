@@ -1,6 +1,6 @@
-import { weeklyDeals as mockDeals } from '../data/deals';
+import { weeklyDeals as staticDeals } from '../data/deals';
 
-const API_URL = 'https://lamp.butterflyagency.io/api/companies/deals';
+// No more Laravel API - deals are now static (baked in at build time)
 const STATUS_CHECK_URL = 'https://flows.butterflyagency.io/webhook/daily-deals/check-status';
 
 // Helper to safely extract value from Attio's array structure
@@ -28,37 +28,12 @@ const getAttioValue = (values, key, type = 'text') => {
 };
 
 export const dealService = {
+  /**
+   * Return static deals (baked in at build time from Google Sheet)
+   * No more runtime API call to Laravel
+   */
   async fetchDeals() {
-    try {
-      const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({})
-      });
-
-      if (!response.ok) {
-        throw new Error(`API Error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      
-      // Check for empty or error response
-      if (data.message === "Unused Respond to Webhook node found in the workflow") {
-        console.warn("API Workflow incomplete. Using mock data.");
-        // Mocking 2 items as requested by user test case
-        return mockDeals.slice(0, 2); 
-      }
-
-      const list = Array.isArray(data) ? data.flat() : (data.data || []);
-      
-      return list.map(item => this.adaptAttioDeal(item));
-
-    } catch (error) {
-      console.error("Failed to fetch deals:", error);
-      return mockDeals.slice(0, 2);
-    }
+    return staticDeals;
   },
 
   adaptAttioDeal(item) {
@@ -137,17 +112,26 @@ export const dealService = {
   },
 
   /**
-   * Check Attio statuses for a list of company IDs
+   * Check Attio statuses for a list of Attio record IDs
    * Returns which companies are already categorized
+   * @param {string[]} attioRecordIds - Array of Attio record IDs
    */
-  async checkAttioStatuses(companyIds) {
+  async checkAttioStatuses(attioRecordIds) {
+    // Filter out null/undefined IDs
+    const validIds = attioRecordIds.filter(id => id != null);
+    
+    if (validIds.length === 0) {
+      console.warn('No valid Attio record IDs to check');
+      return { statuses: [] };
+    }
+
     try {
       const response = await fetch(STATUS_CHECK_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ companyIds })
+        body: JSON.stringify({ companyIds: validIds })
       });
 
       if (!response.ok) {

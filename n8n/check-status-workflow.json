@@ -47,7 +47,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Collect all results and extract business status\nconst results = $input.all().map(item => {\n  const companyId = item.json.companyId || item.json.data?.id?.record_id;\n  const values = item.json.data?.values || {};\n  \n  // Extract business_status from Attio\n  const statusField = values.business_status || values.status || [];\n  const status = statusField[0]?.option?.title || null;\n  \n  // Check if already categorized (has a status that's not null/empty/TBD)\n  const categorizedStatuses = ['Engaged', 'Engaging', 'To engage', 'DQ'];\n  const isProcessed = status && categorizedStatuses.includes(status);\n  \n  return {\n    companyId,\n    status,\n    isProcessed\n  };\n});\n\nreturn [{ json: { statuses: results } }];"
+        "jsCode": "// Collect all results and extract business status\nconst results = $input.all().map(item => {\n  const companyId = item.json.companyId || item.json.data?.id?.record_id;\n  const values = item.json.data?.values || {};\n  \n  // Extract business_status from Attio\n  const statusField = values.business_status || values.status || [];\n  const status = statusField[0]?.option?.title || null;\n  \n  // Check if already categorized (has a status that's not null/empty/TBD)\n  const categorizedStatuses = ['engaged', 'engaging', 'to engage', 'dq'];\n  const isProcessed = status && categorizedStatuses.includes(status.toLowerCase());\n  \n  return {\n    companyId,\n    status,\n    isProcessed\n  };\n});\n\nreturn [{ json: { statuses: results } }];"
       },
       "id": "aggregate",
       "name": "Aggregate Results",

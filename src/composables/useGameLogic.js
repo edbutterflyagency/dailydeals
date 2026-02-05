@@ -16,27 +16,32 @@ export function useGameLogic() {
     isLoading.value = true;
     error.value = null;
     try {
-      // 1. Fetch deals from API
+      // 1. Load static deals (baked in at build time)
       const data = await dealService.fetchDeals();
       weeklyDeals.value = data;
 
-      // 2. Check Attio statuses for all deals
-      if (data.length > 0) {
-        const companyIds = data.map(deal => deal.id);
-        const statusData = await dealService.checkAttioStatuses(companyIds);
+      // 2. Check Attio statuses using attioRecordId (not Laravel id)
+      const attioIds = data.map(deal => deal.attioRecordId).filter(Boolean);
+      
+      if (attioIds.length > 0) {
+        const statusData = await dealService.checkAttioStatuses(attioIds);
         
         // 3. Mark already-categorized deals as processed
         if (statusData.statuses && statusData.statuses.length > 0) {
           statusData.statuses.forEach(item => {
             if (item.isProcessed && item.status) {
-              // Add to results as already done
-              const existingIndex = results.value.findIndex(r => r.dealId === item.companyId);
-              if (existingIndex < 0) {
-                results.value.push({
-                  dealId: item.companyId,
-                  status: item.status,
-                  fromAttio: true // Flag to indicate this came from Attio
-                });
+              // Find the deal by attioRecordId and add to results
+              const deal = data.find(d => d.attioRecordId === item.companyId);
+              if (deal) {
+                const existingIndex = results.value.findIndex(r => r.dealId === deal.id);
+                if (existingIndex < 0) {
+                  results.value.push({
+                    dealId: deal.id,
+                    attioRecordId: item.companyId,
+                    status: item.status,
+                    fromAttio: true // Flag to indicate this came from Attio
+                  });
+                }
               }
             }
           });
@@ -62,6 +67,12 @@ export function useGameLogic() {
       current: currentIndex.value + 1,
       total: weeklyDeals.value.length
     };
+  });
+
+  // Count of deals that haven't been processed yet (not in results)
+  const remainingDeals = computed(() => {
+    const processedIds = new Set(results.value.map(r => r.dealId));
+    return weeklyDeals.value.filter(deal => !processedIds.has(deal.id)).length;
   });
 
   const score = computed(() => {
@@ -126,6 +137,7 @@ export function useGameLogic() {
     score,
     streak,
     progress,
+    remainingDeals,
     isGameCompleted,
     isStarted,
     isLoading,

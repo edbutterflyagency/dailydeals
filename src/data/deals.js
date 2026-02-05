@@ -1,122 +1,252 @@
 export const weeklyDeals = [
   {
-    id: 1,
-    name: "TechNova Solutions",
-    logo: "https://ui-avatars.com/api/?name=TN&background=8b5cf6&color=fff",
-    website: "technova.io",
-    linkedin: "linkedin.com/company/technova",
-    size: "200-500",
-    revenue: "50M€",
-    sector: "SaaS B2B",
-    growth: "+15%",
-    crmTags: ["SaaS", "Upper Mid-Market"],
-    maturity: 3, // 1-5 stars
-    contact: {
-      name: "Alice Martin",
-      title: "VP Sales",
-      lastContact: "3 months ago",
-      hasContact: true,
+    "id": 794,
+    "attioRecordId": null,
+    "name": "Bynder",
+    "logo": "https://ui-avatars.com/api/?name=B&background=8b5cf6&color=fff",
+    "website": "",
+    "linkedin": "",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
+    "growth": "N/A",
+    "crmTags": [],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
     },
-    context: {
-      reason: "Recrutement en cours détecté (LinkedIn)",
-      icon: "📢",
-      color: "blue",
-    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
   },
   {
-    id: 2,
-    name: "GreenEnergy Corp",
-    logo: "https://ui-avatars.com/api/?name=GE&background=10b981&color=fff",
-    website: "greenenergy.co",
-    linkedin: "linkedin.com/company/greenenergy",
-    size: "1000+",
-    revenue: "250M€",
-    sector: "Energy",
-    growth: "+5%",
-    crmTags: ["Enterprise", "Green Tech"],
-    maturity: 4,
-    contact: {
-      name: null,
-      title: null,
-      lastContact: null,
-      hasContact: false,
+    "id": 79,
+    "attioRecordId": null,
+    "name": "Paarly",
+    "logo": "https://ui-avatars.com/api/?name=P&background=10b981&color=fff",
+    "website": "https://www.paarly.com",
+    "linkedin": "https://www.linkedin.com/company/paarly/mycompany/",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
+    "growth": "N/A",
+    "crmTags": [],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
     },
-    context: {
-      reason: "Secteur en croissance (+12%)",
-      icon: "📊",
-      color: "green",
-    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
   },
   {
-    id: 3,
-    name: "FinSecure",
-    logo: "https://ui-avatars.com/api/?name=FS&background=ef4444&color=fff",
-    website: "finsecure.net",
-    linkedin: "linkedin.com/company/finsecure",
-    size: "50-200",
-    revenue: "15M€",
-    sector: "Fintech",
-    growth: "+30%",
-    crmTags: ["Fintech", "Security"],
-    maturity: 2,
-    contact: {
-      name: "Bob Wilson",
-      title: "CTO",
-      lastContact: "6 months ago",
-      hasContact: true,
+    "id": 798,
+    "attioRecordId": null,
+    "name": "Cloz",
+    "logo": "https://ui-avatars.com/api/?name=C&background=ef4444&color=fff",
+    "website": "",
+    "linkedin": "",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
+    "growth": "N/A",
+    "crmTags": [],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
     },
-    context: {
-      reason: "Aucun contact depuis 4 mois",
-      icon: "⏳",
-      color: "orange",
-    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
   },
   {
-    id: 4,
-    name: "LogiChain",
-    logo: "https://ui-avatars.com/api/?name=LC&background=f59e0b&color=fff",
-    website: "logichain.com",
-    linkedin: "linkedin.com/company/logichain",
-    size: "500-1000",
-    revenue: "120M€",
-    sector: "Logistics",
-    growth: "+8%",
-    crmTags: ["Supply Chain", "Legacy"],
-    maturity: 3,
-    contact: {
-      name: "Sarah Jenkins",
-      title: "Ops Director",
-      lastContact: "1 month ago",
-      hasContact: true,
+    "id": 427,
+    "attioRecordId": null,
+    "name": "SOVILEC",
+    "logo": "https://ui-avatars.com/api/?name=S&background=f59e0b&color=fff",
+    "website": "",
+    "linkedin": "",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
+    "growth": "N/A",
+    "crmTags": [],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
     },
-    context: {
-      reason: "Compte jamais qualifié",
-      icon: "⚠️",
-      color: "yellow",
-    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
   },
   {
-    id: 5,
-    name: "EduTech Global",
-    logo: "https://ui-avatars.com/api/?name=ET&background=ec4899&color=fff",
-    website: "edutech.global",
-    linkedin: "linkedin.com/company/edutech",
-    size: "100-200",
-    revenue: "10M€",
-    sector: "EdTech",
-    growth: "+20%",
-    crmTags: ["Education", "Scale-up"],
-    maturity: 5,
-    contact: {
-      name: "Dr. Emily Chen",
-      title: "CEO",
-      lastContact: "2 weeks ago",
-      hasContact: true,
+    "id": 996,
+    "attioRecordId": null,
+    "name": "Amplience",
+    "logo": "https://ui-avatars.com/api/?name=A&background=3b82f6&color=fff",
+    "website": "",
+    "linkedin": "",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
+    "growth": "N/A",
+    "crmTags": [],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
     },
-    context: {
-      reason: "Signal fort: Levée de fonds",
-      icon: "🚀",
-      color: "purple",
-    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
   },
+  {
+    "id": 639,
+    "attioRecordId": null,
+    "name": "monday.com",
+    "logo": "https://ui-avatars.com/api/?name=M&background=ec4899&color=fff",
+    "website": "",
+    "linkedin": "",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
+    "growth": "N/A",
+    "crmTags": [],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
+    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
+  },
+  {
+    "id": 241,
+    "attioRecordId": null,
+    "name": "Fujitsu",
+    "logo": "https://ui-avatars.com/api/?name=F&background=8b5cf6&color=fff",
+    "website": "",
+    "linkedin": "",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
+    "growth": "N/A",
+    "crmTags": [],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
+    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
+  },
+  {
+    "id": 1051,
+    "attioRecordId": null,
+    "name": "Alibaba",
+    "logo": "https://lamp.butterflyagency.io/images/logos/1760392587.png",
+    "website": "",
+    "linkedin": "",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
+    "growth": "N/A",
+    "crmTags": [],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
+    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
+  },
+  {
+    "id": 141,
+    "attioRecordId": null,
+    "name": "base",
+    "logo": "https://lamp.butterflyagency.io/images/logos/1768403949.jpeg",
+    "website": "",
+    "linkedin": "",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
+    "growth": "N/A",
+    "crmTags": [],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
+    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
+  },
+  {
+    "id": 7,
+    "attioRecordId": null,
+    "name": "AWS",
+    "logo": "https://ui-avatars.com/api/?name=A&background=f59e0b&color=fff",
+    "website": "https://aws.amazon.com/fr/local/france/paris/",
+    "linkedin": "https://www.linkedin.com/company/amazon-web-services/",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
+    "growth": "N/A",
+    "crmTags": [],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
+    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
+  }
 ];

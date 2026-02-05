@@ -18,6 +18,7 @@ const {
   startChallenge,
   score,
   streak,
+  remainingDeals,
   resetGame,
   isLoading,
   error,
@@ -99,7 +100,7 @@ onMounted(() => {
         <!-- Start Screen -->
         <StartScreen 
           v-if="!isStarted && !isGameCompleted" 
-          :deal-count="weeklyDeals.length" 
+          :deal-count="remainingDeals" 
           :streak="streak"
           @start="startChallenge"
         />
