@@ -85,14 +85,40 @@ export function useGameLogic() {
 
   const isGameCompleted = computed(() => showSummary.value);
 
-  const submitDecision = (decision) => {
+  const submitDecision = async (decision) => {
+    const deal = currentDeal.value;
+    const attioRecordId = deal.attioRecordId || deal.id;
+    
+    // Map status IDs to Attio format
+    const statusMap = {
+      'engaged': 'engaged',
+      'engaging': 'engaging',
+      'to_engage': 'to engage',
+      'tbd': 'tbd',
+      'dq': 'DQ'
+    };
+    
+    const attioStatus = statusMap[decision.status] || decision.status;
+    
+    // Update status in Attio
+    try {
+      const result = await dealService.updateBusinessStatus(attioRecordId, attioStatus);
+      if (!result.success) {
+        console.error('Failed to update Attio status:', result.error);
+        // Continue anyway to update local state
+      }
+    } catch (e) {
+      console.error('Error updating Attio status:', e);
+    }
+    
     // Check if result already exists for this deal, update if so
-    const existingIndex = results.value.findIndex(r => r.dealId === currentDeal.value.id);
+    const existingIndex = results.value.findIndex(r => r.dealId === deal.id);
     if (existingIndex >= 0) {
-       results.value[existingIndex] = { dealId: currentDeal.value.id, ...decision };
+       results.value[existingIndex] = { dealId: deal.id, attioRecordId, ...decision };
     } else {
        results.value.push({
-        dealId: currentDeal.value.id,
+        dealId: deal.id,
+        attioRecordId,
         ...decision
       });
     }

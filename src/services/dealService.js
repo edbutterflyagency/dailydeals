@@ -2,6 +2,7 @@ import { weeklyDeals as staticDeals } from '../data/deals';
 
 // No more Laravel API - deals are now static (baked in at build time)
 const STATUS_CHECK_URL = 'https://flows.butterflyagency.io/webhook/daily-deals/check-status';
+const STATUS_UPDATE_URL = 'https://flows.butterflyagency.io/webhook/daily-deals/update-status';
 
 // Helper to safely extract value from Attio's array structure
 const getAttioValue = (values, key, type = 'text') => {
@@ -104,11 +105,34 @@ export const dealService = {
     };
   },
 
-  async updateBusinessStatus(companyId, status) {
-    // Simulate API delay
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    console.log(`Updated company ${companyId} status to ${status}`);
-    return { success: true };
+  /**
+   * Update business status in Attio
+   * @param {string} attioRecordId - Attio record ID
+   * @param {string} status - Status value (engaged, engaging, to engage, DQ)
+   */
+  async updateBusinessStatus(attioRecordId, status) {
+    try {
+      const response = await fetch(STATUS_UPDATE_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ attioRecordId, status })
+      });
+
+      const data = await response.json();
+      
+      if (!data.success) {
+        console.error('Failed to update status:', data.error);
+        return { success: false, error: data.error };
+      }
+
+      console.log(`Updated company ${attioRecordId} status to ${data.status}`);
+      return { success: true, status: data.status };
+    } catch (error) {
+      console.error('Failed to update business status:', error);
+      return { success: false, error: error.message };
+    }
   },
 
   /**

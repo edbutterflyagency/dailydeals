@@ -1,0 +1,92 @@
+{
+  "name": "Daily Deals - Update Attio Status",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "daily-deals/update-status",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300],
+      "typeVersion": 2,
+      "webhookId": "daily-deals-update-status"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get parameters from request\nconst body = $input.first().json.body || $input.first().json;\nconst attioRecordId = body.attioRecordId;\nconst status = body.status;\n\nif (!attioRecordId || !status) {\n  throw new Error('Missing required fields: attioRecordId and status');\n}\n\n// Map frontend status to Attio option value\nconst statusMap = {\n  'engaged': 'Engaged',\n  'engaging': 'Engaging', \n  'to engage': 'To engage',\n  'to_engage': 'To engage',\n  'dq': 'DQ',\n  'disqualified': 'DQ'\n};\n\nconst normalizedStatus = statusMap[status.toLowerCase()] || status;\n\nreturn [{ json: { attioRecordId, status: normalizedStatus } }];"
+      },
+      "id": "parse-params",
+      "name": "Parse Parameters",
+      "type": "n8n-nodes-base.code",
+      "position": [450, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "=https://api.attio.com/v2/objects/companies/records/{{ $json.attioRecordId }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"data\": {\n    \"values\": {\n      \"business_status\": \"{{ $json.status }}\"\n    }\n  }\n}",
+        "options": {}
+      },
+      "id": "attio-update",
+      "name": "Update Attio Record",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [650, 300],
+      "typeVersion": 4,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "9wHiahotdFHr3tBF",
+          "name": "Attio API"
+        }
+      },
+      "onError": "continueRegularOutput"
+    },
+    {
+      "parameters": {
+        "jsCode": "const input = $input.first().json;\n\n// Check if update was successful\nif (input.error || input.code) {\n  return [{ json: { \n    success: false, \n    error: input.message || input.error || 'Failed to update Attio',\n    code: input.code\n  }}];\n}\n\n// Extract the updated status\nconst values = input.data?.values || {};\nconst statusField = values.business_status || [];\nconst newStatus = statusField[0]?.option?.title || null;\n\nreturn [{ json: { \n  success: true, \n  attioRecordId: input.data?.id?.record_id,\n  status: newStatus\n}}];"
+      },
+      "id": "format-response",
+      "name": "Format Response",
+      "type": "n8n-nodes-base.code",
+      "position": [850, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [1050, 300],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Parse Parameters", "type": "main", "index": 0 }]]
+    },
+    "Parse Parameters": {
+      "main": [[{ "node": "Update Attio Record", "type": "main", "index": 0 }]]
+    },
+    "Update Attio Record": {
+      "main": [[{ "node": "Format Response", "type": "main", "index": 0 }]]
+    },
+    "Format Response": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}
