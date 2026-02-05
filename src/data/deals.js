@@ -1,21 +1,20 @@
 export const weeklyDeals = [
   {
-    "id": "6d04dcea-20d1-4512-abad-158e64089b02",
-    "attioRecordId": "6d04dcea-20d1-4512-abad-158e64089b02",
-    "name": "Temu",
-    "logo": "https://brandbadge.clearbit.com/a2b1eb91-51a1-4427-94be-328dae5ec57a",
-    "website": "temu.com",
-    "linkedin": "https://linkedin.com/company/temuapp",
-    "size": "251-1K",
-    "revenue": "$10B+",
-    "sector": "Information Technology & Services",
+    "id": "c8e4c598-5f21-41b0-985c-f395a4f48611",
+    "attioRecordId": "c8e4c598-5f21-41b0-985c-f395a4f48611",
+    "name": "RX Global",
+    "logo": "https://brandbadge.clearbit.com/1662cfac-d03c-43ba-a595-025503dc1d68",
+    "website": "rxglobal.com",
+    "linkedin": "https://linkedin.com/company/rx-global",
+    "size": "1K-5K",
+    "revenue": "$1B-$10B",
+    "sector": "Marketplace",
     "growth": "N/A",
     "crmTags": [
-      "Information Technology & Services",
-      "Retail",
-      "E-commerce",
-      "B2C",
-      "E-Commerce & Marketplaces"
+      "Marketplace",
+      "B2B",
+      "Consulting & Professional Services",
+      "Events"
     ],
     "maturity": 3,
     "contact": {
@@ -31,52 +30,22 @@ export const weeklyDeals = [
     }
   },
   {
-    "id": "e8a47536-b052-4202-9e24-70b561b17990",
-    "attioRecordId": "e8a47536-b052-4202-9e24-70b561b17990",
-    "name": "Pimberly",
-    "logo": "https://brandbadge.clearbit.com/c65f6b46-4ef1-486b-993d-2aae18718615",
-    "website": "pimberly.com",
+    "id": "9eb1e119-d6c6-42c1-9998-c1d77b9d0ae4",
+    "attioRecordId": "9eb1e119-d6c6-42c1-9998-c1d77b9d0ae4",
+    "name": "Ometria",
+    "logo": "https://brandbadge.clearbit.com/889b9e15-6bb7-44fd-bd06-6b2f46f93813",
+    "website": "ometria.com",
     "linkedin": "",
     "size": "51-250",
     "revenue": "$10M-$50M",
-    "sector": "B2B",
+    "sector": "Technology",
     "growth": "N/A",
     "crmTags": [
-      "B2B",
-      "SAAS",
-      "Enterprise",
       "Technology",
-      "Information Technology & Services"
-    ],
-    "maturity": 3,
-    "contact": {
-      "name": null,
-      "title": null,
-      "lastContact": null,
-      "hasContact": false
-    },
-    "context": {
-      "reason": "Deal de la semaine",
-      "icon": "🎯",
-      "color": "blue"
-    }
-  },
-  {
-    "id": "1475b8d2-af8e-4522-b742-10f04bcbdeb4",
-    "attioRecordId": "1475b8d2-af8e-4522-b742-10f04bcbdeb4",
-    "name": "Walit",
-    "logo": "https://brandbadge.clearbit.com/600b7b7a-ba6a-4478-a762-5ea72953e0bb",
-    "website": "walit.it",
-    "linkedin": "",
-    "size": "11-50",
-    "revenue": "$1M-$10M",
-    "sector": "E-commerce",
-    "growth": "N/A",
-    "crmTags": [
-      "E-commerce",
       "B2B",
       "Information Technology & Services",
-      "B2C"
+      "Media",
+      "SAAS"
     ],
     "maturity": 3,
     "contact": {
@@ -92,53 +61,26 @@ export const weeklyDeals = [
     }
   },
   {
-    "id": "1ee788c5-c253-42be-a07a-b222f7256792",
-    "attioRecordId": "1ee788c5-c253-42be-a07a-b222f7256792",
-    "name": "Tamara",
-    "logo": "https://brandbadge.clearbit.com/8e210d22-77c0-41bf-9810-dda5c755a23c",
-    "website": "tamara.com",
+    "id": "de96df31-20bb-474b-b940-e366834e15f0",
+    "attioRecordId": "de96df31-20bb-474b-b940-e366834e15f0",
+    "name": "Cloudinary",
+    "logo": "https://brandbadge.clearbit.com/868c6855-3799-4bc8-b090-55a8a1bd0ec1",
+    "website": "cloudinary.com",
     "linkedin": "",
     "size": "251-1K",
     "revenue": "$50M-$100M",
-    "sector": "B2C",
-    "growth": "N/A",
-    "crmTags": [
-      "B2C",
-      "Finance",
-      "Information Technology & Services",
-      "Financial Services",
-      "Insurance",
-      "Technology"
-    ],
-    "maturity": 3,
-    "contact": {
-      "name": null,
-      "title": null,
-      "lastContact": null,
-      "hasContact": false
-    },
-    "context": {
-      "reason": "Deal de la semaine",
-      "icon": "🎯",
-      "color": "blue"
-    }
-  },
-  {
-    "id": "40acf54e-1cc1-477b-bedc-4d3a405f73cd",
-    "attioRecordId": "40acf54e-1cc1-477b-bedc-4d3a405f73cd",
-    "name": "SaleCycle",
-    "logo": "https://brandbadge.clearbit.com/62d947d5-5145-4f33-b886-a5256728fee6",
-    "website": "salescycle.com",
-    "linkedin": "",
-    "size": "51-250",
-    "revenue": "$10M-$50M",
     "sector": "SAAS",
     "growth": "N/A",
     "crmTags": [
       "SAAS",
+      "Enterprise",
+      "Publishing",
+      "B2C",
+      "Information Technology & Services",
+      "Broadcasting",
       "Technology",
-      "B2B",
-      "Information Technology & Services"
+      "Internet",
+      "B2B"
     ],
     "maturity": 3,
     "contact": {
@@ -154,23 +96,21 @@ export const weeklyDeals = [
     }
   },
   {
-    "id": "72c46fe4-864f-427b-958b-b4c85022b54a",
-    "attioRecordId": "72c46fe4-864f-427b-958b-b4c85022b54a",
-    "name": "Windfall",
-    "logo": "https://brandbadge.clearbit.com/127e1141-f559-4e75-9c73-31b8ff028d3b",
-    "website": "windfall.com",
+    "id": "af652789-5ca1-4d2e-81bb-26ae22a2c381",
+    "attioRecordId": "af652789-5ca1-4d2e-81bb-26ae22a2c381",
+    "name": "Salesforce.com Partner",
+    "logo": "https://brandbadge.clearbit.com/6cc11cfc-2a1f-4c45-8669-4c629c85c5c7",
+    "website": "cloudstreetservices.com",
     "linkedin": "",
-    "size": "51-250",
-    "revenue": "$10M-$50M",
-    "sector": "E-commerce",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "Consulting & Professional Services",
     "growth": "N/A",
     "crmTags": [
-      "E-commerce",
+      "Consulting & Professional Services",
       "Technology",
-      "B2C",
-      "SAAS",
-      "Information Technology & Services",
-      "B2B"
+      "B2B",
+      "Information Technology & Services"
     ],
     "maturity": 3,
     "contact": {
@@ -221,14 +161,77 @@ export const weeklyDeals = [
     }
   },
   {
-    "id": "cb543d09-76a8-402d-8cae-e898c5971bb0",
-    "attioRecordId": "cb543d09-76a8-402d-8cae-e898c5971bb0",
-    "name": "Hapsatou Sy",
-    "logo": "https://brandbadge.clearbit.com/92b17902-5e20-4a61-b1dd-f2779d8893e5",
-    "website": "hapsatousy.com",
+    "id": "d952db52-67dc-40f6-b011-50d6251747f3",
+    "attioRecordId": "d952db52-67dc-40f6-b011-50d6251747f3",
+    "name": "Proximity",
+    "logo": "https://brandbadge.clearbit.com/bb7893c9-313a-47b7-a4d3-739d9d44a0c2",
+    "website": "proximityinsight.com",
     "linkedin": "",
-    "size": "11-50",
-    "revenue": "$1M-$10M",
+    "size": "51-250",
+    "revenue": "$10M-$50M",
+    "sector": "Consumer Discretionary",
+    "growth": "N/A",
+    "crmTags": [
+      "Consumer Discretionary",
+      "Marketplace",
+      "SAAS",
+      "Information Technology & Services",
+      "Technology",
+      "B2B"
+    ],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
+    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
+  },
+  {
+    "id": "564e6d5a-6a33-4a83-9798-93ad7c7df6b6",
+    "attioRecordId": "564e6d5a-6a33-4a83-9798-93ad7c7df6b6",
+    "name": "Abra",
+    "logo": "https://logo.clearbit.com/abrasecurity.com",
+    "website": "abrasecurity.com",
+    "linkedin": "",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "Technology",
+    "growth": "N/A",
+    "crmTags": [
+      "Technology",
+      "SAAS",
+      "Security",
+      "Enterprise",
+      "B2B"
+    ],
+    "maturity": 3,
+    "contact": {
+      "name": null,
+      "title": null,
+      "lastContact": null,
+      "hasContact": false
+    },
+    "context": {
+      "reason": "Deal de la semaine",
+      "icon": "🎯",
+      "color": "blue"
+    }
+  },
+  {
+    "id": "432b06f5-1e52-4e5b-8e95-05111316d63f",
+    "attioRecordId": "432b06f5-1e52-4e5b-8e95-05111316d63f",
+    "name": "TestParty",
+    "logo": "https://logo.clearbit.com/testparty.ai",
+    "website": "testparty.ai",
+    "linkedin": "",
+    "size": "N/A",
+    "revenue": "N/A",
     "sector": "N/A",
     "growth": "N/A",
     "crmTags": [],
@@ -246,28 +249,17 @@ export const weeklyDeals = [
     }
   },
   {
-    "id": "79ef8620-61db-4464-973b-0a23acc4032a",
-    "attioRecordId": "79ef8620-61db-4464-973b-0a23acc4032a",
-    "name": "Seel",
-    "logo": "https://brandbadge.clearbit.com/4b011e18-e63a-4921-b6a3-63ffcc10cc79",
-    "website": "seel.com",
+    "id": "1a26690c-8748-4396-a641-801e03f98c3f",
+    "attioRecordId": "1a26690c-8748-4396-a641-801e03f98c3f",
+    "name": "Unknown",
+    "logo": "https://logo.clearbit.com/6madthin.gs",
+    "website": "6madthin.gs",
     "linkedin": "",
-    "size": "11-50",
-    "revenue": "$1M-$10M",
-    "sector": "SAAS",
+    "size": "N/A",
+    "revenue": "N/A",
+    "sector": "N/A",
     "growth": "N/A",
-    "crmTags": [
-      "SAAS",
-      "E-Commerce & Marketplaces",
-      "Marketplace",
-      "Technology",
-      "B2C",
-      "Internet",
-      "E-commerce",
-      "B2B",
-      "Retail",
-      "Information Technology & Services"
-    ],
+    "crmTags": [],
     "maturity": 3,
     "contact": {
       "name": null,
@@ -282,22 +274,20 @@ export const weeklyDeals = [
     }
   },
   {
-    "id": "2b8212b4-5a6e-4a53-9048-9f91b6d48ce8",
-    "attioRecordId": "2b8212b4-5a6e-4a53-9048-9f91b6d48ce8",
-    "name": "Semrush",
-    "logo": "https://brandbadge.clearbit.com/785b0352-9a06-4ab4-b7fa-5ed18465a0d0",
-    "website": "semrush.com",
-    "linkedin": "",
-    "size": "251-1K",
-    "revenue": "$250M-$500M",
-    "sector": "Publishing",
+    "id": "dbfad4eb-e089-4319-8fd3-65d5ec53ee8d",
+    "attioRecordId": "dbfad4eb-e089-4319-8fd3-65d5ec53ee8d",
+    "name": "VenueX",
+    "logo": "https://brandbadge.clearbit.com/2b9b86f2-8e2f-413f-828f-66f05811922e",
+    "website": "venuex.io",
+    "linkedin": "https://linkedin.com/company/venuexio",
+    "size": "11-50",
+    "revenue": "$1M-$10M",
+    "sector": "B2B",
     "growth": "N/A",
     "crmTags": [
-      "Publishing",
-      "Technology",
       "B2B",
-      "SAAS",
-      "Information Technology & Services"
+      "Marketplace",
+      "Marketing & Advertising"
     ],
     "maturity": 3,
     "contact": {
