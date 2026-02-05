@@ -94,7 +94,7 @@ export function useGameLogic() {
       'engaged': 'engaged',
       'engaging': 'engaging',
       'to_engage': 'to engage',
-      'tbd': 'tbd',
+      'tbd': 'TBD',
       'dq': 'DQ'
     };
     
