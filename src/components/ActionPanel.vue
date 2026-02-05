@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from 'vue';
+import { ref, computed, onMounted, onUnmounted } from 'vue';
 
 const props = defineProps({
   dealId: {
@@ -10,14 +10,40 @@ const props = defineProps({
 
 const emit = defineEmits(['decision-made']);
 
-const attioUrl = computed(() => {
-  return `https://app.attio.com/butterflyagency/company/${props.dealId}`;
+const isOpen = ref(false);
+const selectedId = ref(null);
+
+const statuses = [
+  { id: 'engaged', label: 'Engaged', color: '#10b981', icon: '🤝' },
+  { id: 'engaging', label: 'Engaging', color: '#6366f1', icon: '⚡' },
+  { id: 'to_engage', label: 'To engage', color: '#f59e0b', icon: '🎯' },
+  { id: 'tbd', label: 'To be defined', color: '#94a3b8', icon: '❓' },
+  { id: 'dq', label: 'DQ', color: '#ef4444', icon: '🚫' }
+];
+
+const selectedItem = computed(() => {
+  return statuses.find(s => s.id === selectedId.value) || { label: 'Choisir un statut...', color: '#94a3b8' };
 });
 
-const openAttio = () => {
-  window.open(attioUrl.value, '_blank');
-  emit('decision-made', { status: 'opened_attio' });
+const toggleDropdown = () => {
+  isOpen.value = !isOpen.value;
 };
+
+const selectStatus = (status) => {
+  selectedId.value = status.id;
+  isOpen.value = false;
+  emit('decision-made', { status: status.id });
+};
+
+// Close on outside click
+const closeDropdown = (e) => {
+  if (!e.target.closest('.modern-select-container')) {
+    isOpen.value = false;
+  }
+};
+
+onMounted(() => window.addEventListener('click', closeDropdown));
+onUnmounted(() => window.removeEventListener('click', closeDropdown));
 </script>
 
 <template>
@@ -25,27 +51,44 @@ const openAttio = () => {
     <div class="action-card">
       <div class="action-header">
         <label class="section-label">Business Status</label>
-        <div class="action-badge disabled-badge">Non connecté</div>
+        <div class="action-badge">Action Finale</div>
       </div>
       
-      <!-- Disabled message -->
-      <div class="disabled-notice">
-        <div class="notice-icon">⚠️</div>
-        <p class="notice-text">
-          L'enregistrement n'est pas encore connecté au CRM. 
-          Pour modifier le statut de ce deal, veuillez effectuer la modification directement sur Attio.
-        </p>
-      </div>
+      <div class="modern-select-container">
+        <!-- Main Toggle -->
+        <div 
+          class="dropdown-toggle" 
+          :class="{ open: isOpen }"
+          @click="toggleDropdown"
+        >
+          <div class="selected-content">
+            <span v-if="selectedId" class="status-icon">{{ selectedItem.icon }}</span>
+            <span class="label-text" :style="{ color: selectedId ? 'var(--text-primary)' : '#94a3b8' }">
+              {{ selectedId ? selectedItem.label : 'Qualifier le deal...' }}
+            </span>
+          </div>
+          <span class="chevron" :class="{ rotated: isOpen }">⌄</span>
+        </div>
 
-      <!-- Attio Button -->
-      <a :href="attioUrl" target="_blank" class="attio-btn" @click="openAttio">
-        <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
-          <polyline points="15 3 21 3 21 9"/>
-          <line x1="10" y1="14" x2="21" y2="3"/>
-        </svg>
-        Modifier sur Attio
-      </a>
+        <!-- Dropdown Menu (Opens Upwards) -->
+        <Transition name="slide-up">
+          <div v-if="isOpen" class="dropdown-menu">
+            <div 
+              v-for="status in statuses" 
+              :key="status.id"
+              class="menu-item"
+              :class="{ selected: selectedId === status.id }"
+              @click="selectStatus(status)"
+            >
+              <div class="item-visual" :style="{ background: status.color + '20', color: status.color }">
+                {{ status.icon }}
+              </div>
+              <span class="item-label">{{ status.label }}</span>
+              <span v-if="selectedId === status.id" class="check">✓</span>
+            </div>
+          </div>
+        </Transition>
+      </div>
     </div>
   </div>
 </template>
@@ -73,6 +116,8 @@ const openAttio = () => {
 }
 
 .action-badge {
+  background: var(--accent-soft);
+  color: var(--accent-primary);
   font-size: 0.65rem;
   font-weight: 800;
   text-transform: uppercase;
@@ -81,75 +126,123 @@ const openAttio = () => {
   letter-spacing: 0.05em;
 }
 
-.disabled-badge {
-  background: #fef3c7;
-  color: #92400e;
-}
-
 .section-label {
   font-size: 0.75rem;
   font-weight: 800;
   text-transform: uppercase;
-  color: #64748b;
+  color: #1e293b;
   letter-spacing: 0.05em;
 }
 
-/* Disabled Notice */
-.disabled-notice {
+.modern-select-container {
+  position: relative;
+  width: 100%;
+}
+
+.dropdown-toggle {
   background: #f8fafc;
-  border: 1px dashed #cbd5e1;
+  border: 1px solid #e2e8f0;
+  padding: 0.5rem 1rem;
   border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1rem;
+  cursor: pointer;
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+  min-height: 44px;
+}
+
+.dropdown-toggle:hover {
+  border-color: var(--accent-primary);
+  background: white;
+}
+
+.dropdown-toggle.open {
+  border-color: var(--accent-primary);
+  background: white;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.selected-content {
+  display: flex;
+  align-items: center;
   gap: 0.75rem;
-  align-items: flex-start;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 0.95rem;
 }
 
-.notice-icon {
-  font-size: 1.25rem;
-  line-height: 1;
-  flex-shrink: 0;
+.chevron {
+  font-size: 1rem;
+  color: #94a3b8;
+  transition: transform 0.2s;
 }
 
-.notice-text {
-  margin: 0;
-  font-size: 0.875rem;
-  color: #64748b;
-  line-height: 1.5;
+.chevron.rotated {
+  transform: rotate(180deg);
 }
 
-/* Attio Button */
-.attio-btn {
+.dropdown-menu {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 -10px 25px -5px rgba(0,0,0,0.1);
+  z-index: 1000;
+  padding: 0.5rem;
+  overflow: hidden;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0.75rem;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.menu-item:hover {
+  background: #f1f5f9;
+}
+
+.menu-item.selected {
+  background: #eff6ff;
+}
+
+.item-visual {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  width: 100%;
-  padding: 0.875rem 1.25rem;
-  background: #1e293b;
-  color: white;
-  border: none;
-  border-radius: 12px;
-  font-size: 1rem;
-  font-weight: 700;
-  text-decoration: none;
-  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.item-label {
+  flex: 1;
+  font-weight: 600;
+  color: #1e293b;
+  font-size: 0.95rem;
+}
+
+.check {
+  color: #3b82f6;
+  font-weight: 900;
+}
+
+/* Transitions */
+.slide-up-enter-active, .slide-up-leave-active {
   transition: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);
 }
-
-.attio-btn:hover {
-  background: #334155;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px -4px rgba(30, 41, 59, 0.3);
-}
-
-.attio-btn:active {
-  transform: translateY(0);
-}
-
-.attio-btn svg {
-  flex-shrink: 0;
+.slide-up-enter-from, .slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
 }
 
 /* Mobile Responsive */
@@ -172,23 +265,32 @@ const openAttio = () => {
     padding: 2px 6px;
   }
 
-  .disabled-notice {
-    padding: 0.875rem;
+  .dropdown-toggle {
+    min-height: 48px;
+    border-radius: 10px;
+  }
+
+  .selected-content {
+    font-size: 0.9rem;
     gap: 0.5rem;
   }
 
-  .notice-icon {
-    font-size: 1.1rem;
+  .dropdown-menu {
+    border-radius: 14px;
   }
 
-  .notice-text {
-    font-size: 0.8rem;
+  .menu-item {
+    padding: 0.75rem;
   }
 
-  .attio-btn {
-    padding: 0.75rem 1rem;
-    font-size: 0.95rem;
-    border-radius: 10px;
+  .item-visual {
+    width: 28px;
+    height: 28px;
+    font-size: 1rem;
+  }
+
+  .item-label {
+    font-size: 0.9rem;
   }
 }
 
@@ -198,14 +300,13 @@ const openAttio = () => {
     border-radius: 14px;
   }
 
-  .disabled-notice {
-    flex-direction: column;
-    text-align: center;
-    gap: 0.5rem;
+  .dropdown-toggle {
+    padding: 0.6rem 0.875rem;
   }
 
-  .attio-btn {
-    padding: 0.875rem;
+  .menu-item {
+    padding: 0.6rem;
+    gap: 0.5rem;
   }
 }
 </style>
