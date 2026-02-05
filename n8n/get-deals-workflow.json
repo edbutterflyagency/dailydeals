@@ -1,0 +1,91 @@
+{
+  "name": "Daily Deals - Get Deals from Attio",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "daily-deals/get-deals",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "position": [250, 300],
+      "typeVersion": 2,
+      "webhookId": "daily-deals-get-deals"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Get parameters from request\nconst body = $input.first().json.body || $input.first().json;\nconst limit = body.limit || 10;\nconst offset = body.offset || 0;\n\n// Pass to next node\nreturn [{ json: { limit, offset } }];"
+      },
+      "id": "parse-params",
+      "name": "Parse Parameters",
+      "type": "n8n-nodes-base.code",
+      "position": [450, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.attio.com/v2/objects/companies/records/query",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpHeaderAuth",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"limit\": {{ $json.limit }},\n  \"offset\": {{ $json.offset }},\n  \"sorts\": [\n    {\n      \"attribute\": \"created_at\",\n      \"direction\": \"desc\"\n    }\n  ]\n}",
+        "options": {}
+      },
+      "id": "attio-query",
+      "name": "Query Attio Companies",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [650, 300],
+      "typeVersion": 4,
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "9wHiahotdFHr3tBF",
+          "name": "Attio API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Transform Attio data to frontend format\nconst input = $input.first().json;\nconst records = input.data || [];\n\nconst getVal = (values, key, type = 'text') => {\n  if (!values || !values[key] || values[key].length === 0) return null;\n  const item = values[key][0];\n  \n  if (type === 'domain') return item.domain;\n  if (type === 'option') return item.option?.title;\n  if (type === 'options') return values[key].map(i => i.option?.title).filter(Boolean);\n  \n  return item.value || item.option?.title || null;\n};\n\nconst deals = records.map((record, idx) => {\n  const values = record.values || {};\n  const name = getVal(values, 'name') || 'Unknown';\n  const domain = getVal(values, 'domains', 'domain');\n  \n  // Generate avatar colors\n  const colors = ['8b5cf6', '10b981', 'ef4444', 'f59e0b', '3b82f6', 'ec4899'];\n  const initials = name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();\n  const color = colors[idx % colors.length];\n  \n  return {\n    id: record.id?.record_id,\n    attioRecordId: record.id?.record_id,\n    name: name,\n    logo: getVal(values, 'logo_url') || (domain ? `https://logo.clearbit.com/${domain}` : `https://ui-avatars.com/api/?name=${initials}&background=${color}&color=fff`),\n    website: domain || '',\n    linkedin: getVal(values, 'linkedin') || '',\n    size: getVal(values, 'employee_range', 'option') || 'N/A',\n    revenue: getVal(values, 'estimated_arr_usd', 'option') || 'N/A',\n    sector: getVal(values, 'categories', 'option') || 'N/A',\n    growth: 'N/A',\n    crmTags: getVal(values, 'categories', 'options') || [],\n    maturity: 3,\n    contact: {\n      name: null,\n      title: null,\n      lastContact: null,\n      hasContact: false\n    },\n    context: {\n      reason: 'Deal de la semaine',\n      icon: '🎯',\n      color: 'blue'\n    }\n  };\n});\n\nreturn [{ json: { deals, total: input.total || deals.length } }];"
+      },
+      "id": "transform",
+      "name": "Transform Data",
+      "type": "n8n-nodes-base.code",
+      "position": [850, 300],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {}
+      },
+      "id": "respond",
+      "name": "Respond",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "position": [1050, 300],
+      "typeVersion": 1
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [[{ "node": "Parse Parameters", "type": "main", "index": 0 }]]
+    },
+    "Parse Parameters": {
+      "main": [[{ "node": "Query Attio Companies", "type": "main", "index": 0 }]]
+    },
+    "Query Attio Companies": {
+      "main": [[{ "node": "Transform Data", "type": "main", "index": 0 }]]
+    },
+    "Transform Data": {
+      "main": [[{ "node": "Respond", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

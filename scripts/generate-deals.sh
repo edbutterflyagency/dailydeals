@@ -5,6 +5,7 @@
 set -e
 
 SHEET_ID="1JYLRAlI-fNrJyKjnzAH2vpT2ixpRuZCLrQrLmRLH8Xs"
+N8N_ENDPOINT="https://flows.butterflyagency.io/webhook/daily-deals/get-deals"
 REPO_DIR="$(dirname "$0")/.."
 cd "$REPO_DIR"
 
@@ -15,118 +16,80 @@ WEEK_KEY="${CURRENT_YEAR}-W${CURRENT_WEEK}"
 
 echo "📅 Generating deals for week $WEEK_KEY..."
 
-# Find the row for current week in Sheet
-SHEET_DATA=$(gog sheets get "$SHEET_ID" "Feuille 1!A:F" --json 2>/dev/null)
+# Check if we have cached deals from fetch-weekly-deals.sh
+if [ -f /tmp/weekly-deals.json ]; then
+  echo "📦 Using cached deal data from fetch step..."
+  DEALS_JSON=$(cat /tmp/weekly-deals.json)
+else
+  # Read Attio IDs from Google Sheet
+  echo "📖 Reading Attio IDs from Google Sheet..."
+  SHEET_DATA=$(gog sheets get "$SHEET_ID" "Feuille 1!A:F" --json 2>/dev/null)
 
-# Extract company IDs and Attio IDs for current week
-# Parse the JSON to find the row matching current week
-WEEK_ROW=$(echo "$SHEET_DATA" | jq -r --arg week "$WEEK_KEY" '.values[]? | select(.[0] == $week)')
+  # Find the row for current week
+  ATTIO_IDS=$(echo "$SHEET_DATA" | jq -r --arg week "$WEEK_KEY" '
+    .values[]? | select(.[0] == $week) | .[3] // ""
+  ')
 
-if [ -z "$WEEK_ROW" ]; then
-  echo "❌ No deals found for week $WEEK_KEY in Google Sheet"
+  if [ -z "$ATTIO_IDS" ] || [ "$ATTIO_IDS" == "null" ]; then
+    echo "❌ No Attio IDs found for week $WEEK_KEY in Google Sheet"
+    echo "   Run ./scripts/fetch-weekly-deals.sh first"
+    exit 1
+  fi
+
+  echo "🔗 Attio IDs: $ATTIO_IDS"
+
+  # Fetch deals from n8n for these specific IDs
+  # For now, we'll fetch all and filter by the IDs we have
+  echo "🔄 Fetching deal details from Attio..."
+  
+  # Convert comma-separated to array for filtering
+  IFS=',' read -ra ID_ARRAY <<< "$ATTIO_IDS"
+  NUM_IDS=${#ID_ARRAY[@]}
+  
+  RESPONSE=$(curl -s -X POST "$N8N_ENDPOINT" \
+    -H "Content-Type: application/json" \
+    -d "{\"limit\": 100}")
+  
+  # Filter to only the IDs we want
+  DEALS_JSON=$(echo "$RESPONSE" | jq -c --arg ids "$ATTIO_IDS" '
+    .deals | map(select(.attioRecordId as $id | ($ids | split(",") | map(. == $id) | any)))
+  ')
+fi
+
+# Count deals
+NUM_DEALS=$(echo "$DEALS_JSON" | jq 'length')
+echo "📊 Found $NUM_DEALS deals"
+
+if [ "$NUM_DEALS" -eq 0 ]; then
+  echo "❌ No deals to generate"
   exit 1
 fi
 
-COMPANY_IDS=$(echo "$WEEK_ROW" | jq -r '.[2] // ""')
-ATTIO_IDS=$(echo "$WEEK_ROW" | jq -r '.[3] // ""')
+# Generate deals.js
+echo "📝 Generating src/data/deals.js..."
 
-if [ -z "$COMPANY_IDS" ] || [ "$COMPANY_IDS" == "null" ]; then
-  echo "❌ No company IDs for week $WEEK_KEY"
-  exit 1
-fi
+cat > src/data/deals.js << EOF
+export const weeklyDeals = $(echo "$DEALS_JSON" | jq '.');
+EOF
 
-echo "📦 Company IDs: $COMPANY_IDS"
-echo "🔗 Attio IDs: $ATTIO_IDS"
+echo "✅ Generated deals.js with $NUM_DEALS deals"
 
-# Fetch company details from Laravel API and generate deals.js
-echo "🔄 Fetching company details..."
+# List the deals
+echo ""
+echo "📋 Deals for this week:"
+echo "$DEALS_JSON" | jq -r '.[].name' | while read name; do
+  echo "  • $name"
+done
 
-node -e "
-const https = require('https');
-const fs = require('fs');
-
-const companyIds = '$COMPANY_IDS'.split(',').map(s => s.trim()).filter(Boolean);
-const attioIds = '$ATTIO_IDS'.split(',').map(s => s.trim()).filter(Boolean);
-
-async function fetchCompany(id) {
-  return new Promise((resolve, reject) => {
-    https.get('https://lamp.butterflyagency.io/api/companies/' + id, (res) => {
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => {
-        try {
-          resolve(JSON.parse(data));
-        } catch (e) {
-          reject(e);
-        }
-      });
-    }).on('error', reject);
-  });
-}
-
-async function main() {
-  const deals = [];
-  
-  for (let i = 0; i < companyIds.length; i++) {
-    const id = companyIds[i];
-    const attioId = attioIds[i] || null;
-    
-    try {
-      const company = await fetchCompany(id);
-      
-      // Generate initials for avatar
-      const initials = company.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
-      const colors = ['8b5cf6', '10b981', 'ef4444', 'f59e0b', '3b82f6', 'ec4899'];
-      const color = colors[i % colors.length];
-      
-      deals.push({
-        id: parseInt(id),
-        attioRecordId: attioId,
-        name: company.name,
-        logo: company.logo 
-          ? 'https://lamp.butterflyagency.io/' + company.logo
-          : 'https://ui-avatars.com/api/?name=' + initials + '&background=' + color + '&color=fff',
-        website: company.website || '',
-        linkedin: company.linkedin_url || '',
-        size: company.employees_count || 'N/A',
-        revenue: company.annual_revenue || 'N/A',
-        sector: company.industry || 'N/A',
-        growth: 'N/A',
-        crmTags: company.industry ? [company.industry] : [],
-        maturity: 3,
-        contact: {
-          name: null,
-          title: null,
-          lastContact: null,
-          hasContact: false
-        },
-        context: {
-          reason: 'Deal de la semaine',
-          icon: '🎯',
-          color: 'blue'
-        }
-      });
-      
-      console.log('✅ Fetched: ' + company.name);
-    } catch (e) {
-      console.error('❌ Failed to fetch company ' + id + ': ' + e.message);
-    }
-  }
-  
-  const output = 'export const weeklyDeals = ' + JSON.stringify(deals, null, 2) + ';\\n';
-  fs.writeFileSync('src/data/deals.js', output);
-  console.log('\\n📝 Generated src/data/deals.js with ' + deals.length + ' deals');
-}
-
-main().catch(console.error);
-"
-
+echo ""
 echo "🔨 Building static site..."
 npm run build
 
+echo ""
 echo "📤 Pushing to GitHub..."
 git add -A
 git commit -m "🔄 Weekly deals update - $WEEK_KEY" || echo "No changes to commit"
 git push origin main
 
+echo ""
 echo "✅ Done! Site will auto-deploy to Netlify"
