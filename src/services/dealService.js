@@ -106,31 +106,31 @@ export const dealService = {
   },
 
   /**
-   * Update business status in Attio
+   * Update qualification in Attio
    * @param {string} attioRecordId - Attio record ID
-   * @param {string} status - Status value (engaged, engaging, to engage, DQ)
+   * @param {string} qualification - Qualification value (yes/no)
    */
-  async updateBusinessStatus(attioRecordId, status) {
+  async updateQualification(attioRecordId, qualification) {
     try {
       const response = await fetch(STATUS_UPDATE_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ attioRecordId, status })
+        body: JSON.stringify({ attioRecordId, qualification })
       });
 
       const data = await response.json();
       
       if (!data.success) {
-        console.error('Failed to update status:', data.error);
+        console.error('Failed to update qualification:', data.error);
         return { success: false, error: data.error };
       }
 
-      console.log(`Updated company ${attioRecordId} status to ${data.status}`);
-      return { success: true, status: data.status };
+      console.log(`Updated company ${attioRecordId} qualification to ${data.qualification}`);
+      return { success: true, qualification: data.qualification };
     } catch (error) {
-      console.error('Failed to update business status:', error);
+      console.error('Failed to update qualification:', error);
       return { success: false, error: error.message };
     }
   },

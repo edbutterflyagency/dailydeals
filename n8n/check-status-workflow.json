@@ -1,5 +1,5 @@
 {
-  "name": "Daily Deals - Check Attio Status",
+  "name": "Daily Deals - Check Attio Qualification",
   "nodes": [
     {
       "parameters": {
@@ -47,7 +47,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Collect all results and extract business status\nconst results = $input.all().map(item => {\n  const companyId = item.json.companyId || item.json.data?.id?.record_id;\n  const values = item.json.data?.values || {};\n  \n  // Extract business_status from Attio\n  const statusField = values.business_status || values.status || [];\n  const status = statusField[0]?.option?.title || null;\n  \n  // Check if already categorized (has a status that's not null/empty/TBD)\n  const categorizedStatuses = ['engaged', 'engaging', 'to engage', 'tbd', 'dq'];\n  const isProcessed = status && categorizedStatuses.includes(status.toLowerCase());\n  \n  return {\n    companyId,\n    status,\n    isProcessed\n  };\n});\n\nreturn [{ json: { statuses: results } }];"
+        "jsCode": "// Collect all results and extract qualification\nconst results = $input.all().map(item => {\n  const companyId = item.json.companyId || item.json.data?.id?.record_id;\n  const values = item.json.data?.values || {};\n  \n  // Extract qualification from Attio (yes/no field)\n  const qualField = values.qualification || [];\n  const qualification = qualField[0]?.option?.title || qualField[0]?.value || null;\n  \n  // isProcessed = true if qualification has a value (yes or no)\n  const isProcessed = qualification && ['yes', 'no'].includes(qualification.toLowerCase());\n  \n  return {\n    companyId,\n    qualification: qualification ? qualification.toLowerCase() : null,\n    isProcessed\n  };\n});\n\nreturn [{ json: { statuses: results } }];"
       },
       "id": "aggregate",
       "name": "Aggregate Results",

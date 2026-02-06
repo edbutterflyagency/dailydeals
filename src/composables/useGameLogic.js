@@ -26,10 +26,11 @@ export function useGameLogic() {
       if (attioIds.length > 0) {
         const statusData = await dealService.checkAttioStatuses(attioIds);
         
-        // 3. Mark already-categorized deals as processed
+        // 3. Mark already-qualified deals as processed
         if (statusData.statuses && statusData.statuses.length > 0) {
           statusData.statuses.forEach(item => {
-            if (item.isProcessed && item.status) {
+            // isProcessed = true means qualification field has a value (yes or no)
+            if (item.isProcessed && item.qualification) {
               // Find the deal by attioRecordId and add to results
               const deal = data.find(d => d.attioRecordId === item.companyId);
               if (deal) {
@@ -38,7 +39,7 @@ export function useGameLogic() {
                   results.value.push({
                     dealId: deal.id,
                     attioRecordId: item.companyId,
-                    status: item.status,
+                    status: item.qualification, // 'yes' or 'no'
                     fromAttio: true // Flag to indicate this came from Attio
                   });
                 }
@@ -89,26 +90,18 @@ export function useGameLogic() {
     const deal = currentDeal.value;
     const attioRecordId = deal.attioRecordId || deal.id;
     
-    // Map status IDs to Attio format
-    const statusMap = {
-      'engaged': 'engaged',
-      'engaging': 'engaging',
-      'to_engage': 'to engage',
-      'tbd': 'TBD',
-      'dq': 'DQ'
-    };
+    // Qualification is simply yes or no
+    const qualification = decision.status; // 'yes' or 'no'
     
-    const attioStatus = statusMap[decision.status] || decision.status;
-    
-    // Update status in Attio
+    // Update qualification in Attio
     try {
-      const result = await dealService.updateBusinessStatus(attioRecordId, attioStatus);
+      const result = await dealService.updateQualification(attioRecordId, qualification);
       if (!result.success) {
-        console.error('Failed to update Attio status:', result.error);
+        console.error('Failed to update Attio qualification:', result.error);
         // Continue anyway to update local state
       }
     } catch (e) {
-      console.error('Error updating Attio status:', e);
+      console.error('Error updating Attio qualification:', e);
     }
     
     // Check if result already exists for this deal, update if so

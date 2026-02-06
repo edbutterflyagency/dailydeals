@@ -1,5 +1,5 @@
 {
-  "name": "Daily Deals - Update Attio Status",
+  "name": "Daily Deals - Update Attio Qualification",
   "nodes": [
     {
       "parameters": {
@@ -17,7 +17,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Get parameters from request\nconst body = $input.first().json.body || $input.first().json;\nconst attioRecordId = body.attioRecordId;\nconst status = body.status;\n\nif (!attioRecordId || !status) {\n  throw new Error('Missing required fields: attioRecordId and status');\n}\n\n// Map frontend status to Attio option value\nconst statusMap = {\n  'engaged': 'Engaged',\n  'engaging': 'Engaging', \n  'to engage': 'To engage',\n  'to_engage': 'To engage',\n  'dq': 'DQ',\n  'disqualified': 'DQ'\n};\n\nconst normalizedStatus = statusMap[status.toLowerCase()] || status;\n\nreturn [{ json: { attioRecordId, status: normalizedStatus } }];"
+        "jsCode": "// Get parameters from request\nconst body = $input.first().json.body || $input.first().json;\nconst attioRecordId = body.attioRecordId;\nconst qualification = body.qualification;\n\nif (!attioRecordId || !qualification) {\n  throw new Error('Missing required fields: attioRecordId and qualification');\n}\n\n// Normalize qualification to lowercase yes/no\nconst normalizedQualification = qualification.toLowerCase() === 'yes' ? 'yes' : 'no';\n\nreturn [{ json: { attioRecordId, qualification: normalizedQualification } }];"
       },
       "id": "parse-params",
       "name": "Parse Parameters",
@@ -33,7 +33,7 @@
         "genericAuthType": "httpHeaderAuth",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={\n  \"data\": {\n    \"values\": {\n      \"business_status\": \"{{ $json.status }}\"\n    }\n  }\n}",
+        "jsonBody": "={\n  \"data\": {\n    \"values\": {\n      \"qualification\": \"{{ $json.qualification }}\"\n    }\n  }\n}",
         "options": {}
       },
       "id": "attio-update",
@@ -51,7 +51,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const input = $input.first().json;\n\n// Check if update was successful\nif (input.error || input.code) {\n  return [{ json: { \n    success: false, \n    error: input.message || input.error || 'Failed to update Attio',\n    code: input.code\n  }}];\n}\n\n// Extract the updated status\nconst values = input.data?.values || {};\nconst statusField = values.business_status || [];\nconst newStatus = statusField[0]?.option?.title || null;\n\nreturn [{ json: { \n  success: true, \n  attioRecordId: input.data?.id?.record_id,\n  status: newStatus\n}}];"
+        "jsCode": "const input = $input.first().json;\n\n// Check if update was successful\nif (input.error || input.code) {\n  return [{ json: { \n    success: false, \n    error: input.message || input.error || 'Failed to update Attio',\n    code: input.code\n  }}];\n}\n\n// Extract the updated qualification\nconst values = input.data?.values || {};\nconst qualField = values.qualification || [];\nconst newQualification = qualField[0]?.option?.title || qualField[0]?.value || null;\n\nreturn [{ json: { \n  success: true, \n  attioRecordId: input.data?.id?.record_id,\n  qualification: newQualification\n}}];"
       },
       "id": "format-response",
       "name": "Format Response",
