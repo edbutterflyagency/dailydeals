@@ -4,7 +4,9 @@ import SidebarNav from './components/SidebarNav.vue';
 import CompanyCard from './components/CompanyCard.vue';
 import GameSummary from './components/GameSummary.vue';
 import StartScreen from './components/StartScreen.vue';
+import Snackbar from './components/Snackbar.vue';
 import { useGameLogic } from './composables/useGameLogic';
+import { getRandomMessage } from './data/victoryMessages';
 
 const { 
   weeklyDeals,
@@ -27,6 +29,20 @@ const {
 
 // Mobile menu state
 const isMobileMenuOpen = ref(false);
+
+// Snackbar state
+const showSnackbar = ref(false);
+const snackbarMessage = ref('');
+
+const handleDecision = (decision) => {
+  submitDecision(decision);
+  snackbarMessage.value = getRandomMessage();
+  showSnackbar.value = true;
+};
+
+const hideSnackbar = () => {
+  showSnackbar.value = false;
+};
 
 const toggleMobileMenu = () => {
   isMobileMenuOpen.value = !isMobileMenuOpen.value;
@@ -127,7 +143,7 @@ onMounted(() => {
            <CompanyCard 
             :deal="currentDeal"
             :current-status="currentDealStatus"
-            @decision="submitDecision" 
+            @decision="handleDecision" 
           />
         </div>
         
@@ -137,6 +153,13 @@ onMounted(() => {
       </template>
 
     </main>
+
+    <!-- Snackbar -->
+    <Snackbar 
+      :show="showSnackbar" 
+      :message="snackbarMessage" 
+      @hide="hideSnackbar" 
+    />
   </div>
 </template>
 
