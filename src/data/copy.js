@@ -15,10 +15,10 @@
 // 🏠 ÉCRAN D'ACCUEIL (StartScreen)
 // ============================================
 export const startScreen = {
-  title: "Challenge du Jour",
+  title: "READY? 🎮",
   subtitle: "Round 1. Fight! 🥊",
-  dealCountLabel: "Deals à qualifier",
-  startButton: "C'est parti ! 🚀"
+  dealCountLabel: "Challengers",
+  startButton: "INSERT COIN 🕹️"
 };
 
 // ============================================
