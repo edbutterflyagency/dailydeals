@@ -1,5 +1,6 @@
 <script setup>
 import { ref, computed, watch, onMounted, onUnmounted } from 'vue';
+import confetti from 'canvas-confetti';
 
 const props = defineProps({
   dealId: {
@@ -53,6 +54,14 @@ const selectStatus = (status) => {
   selectedId.value = status.id;
   isOpen.value = false;
   emit('decision-made', { status: status.id });
+  
+  // Victory animation 🎉
+  confetti({
+    particleCount: 100,
+    spread: 70,
+    origin: { y: 0.8 },
+    colors: ['#6366f1', '#8b5cf6', '#10b981', '#f59e0b', '#ef4444']
+  });
 };
 
 // Close on outside click
