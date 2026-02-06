@@ -106,21 +106,6 @@ export const themes = {
       "FIGHT! 🥊 Un de moins!"
     ]
   },
-  pokemon: {
-    name: "Pokémon",
-    messages: [
-      "Deal capturé! 🎯",
-      "C'est super efficace! ⚡",
-      "Un Pokémon sauvage a fui... enfin non! 🏃",
-      "Attrapez-les tous! 🔴⚪",
-      "Niveau supérieur! 📈",
-      "Évolution en cours... ✨",
-      "PIKACHU! ⚡ Deal validé!",
-      "Badge obtenu! 🏅",
-      "Pokédex mis à jour! 📱",
-      "Maître Pokémon en devenir! 🎓"
-    ]
-  },
   mario: {
     name: "Super Mario",
     messages: [
