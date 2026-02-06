@@ -15,10 +15,10 @@ const props = defineProps({
 
 const emit = defineEmits(['decision-made']);
 
-// Map Attio value to our format
+// Map Attio value to our format (case-insensitive input, normalized output)
 const attioToValue = {
-  'yes': 'yes',
-  'no': 'no'
+  'yes': 'Yes',
+  'no': 'No'
 };
 
 // Initialize from prop
@@ -30,6 +30,7 @@ watch(() => props.currentStatus, (newStatus) => {
 });
 
 const selectQualification = (value) => {
+  // value is 'Yes' or 'No' with proper casing
   selectedValue.value = value;
   emit('decision-made', { status: value });
   
@@ -38,7 +39,7 @@ const selectQualification = (value) => {
     particleCount: 100,
     spread: 70,
     origin: { y: 0.8 },
-    colors: value === 'yes' 
+    colors: value === 'Yes' 
       ? ['#10b981', '#34d399', '#6ee7b7', '#a7f3d0']
       : ['#ef4444', '#f87171', '#fca5a5', '#fecaca']
   });
@@ -56,8 +57,8 @@ const selectQualification = (value) => {
       <div class="buttons-container">
         <button 
           class="qual-btn yes-btn"
-          :class="{ selected: selectedValue === 'yes' }"
-          @click="selectQualification('yes')"
+          :class="{ selected: selectedValue === 'Yes' }"
+          @click="selectQualification('Yes')"
         >
           <span class="btn-icon">✅</span>
           <span class="btn-label">YES</span>
@@ -65,8 +66,8 @@ const selectQualification = (value) => {
         
         <button 
           class="qual-btn no-btn"
-          :class="{ selected: selectedValue === 'no' }"
-          @click="selectQualification('no')"
+          :class="{ selected: selectedValue === 'No' }"
+          @click="selectQualification('No')"
         >
           <span class="btn-icon">❌</span>
           <span class="btn-label">NO</span>

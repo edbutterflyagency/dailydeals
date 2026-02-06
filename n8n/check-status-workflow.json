@@ -47,7 +47,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// Collect all results and extract qualification\nconst results = $input.all().map(item => {\n  const companyId = item.json.companyId || item.json.data?.id?.record_id;\n  const values = item.json.data?.values || {};\n  \n  // Extract qualification from Attio (yes/no field)\n  const qualField = values.qualification || [];\n  const qualification = qualField[0]?.option?.title || qualField[0]?.value || null;\n  \n  // isProcessed = true if qualification has a value (yes or no)\n  const isProcessed = qualification && ['yes', 'no'].includes(qualification.toLowerCase());\n  \n  return {\n    companyId,\n    qualification: qualification ? qualification.toLowerCase() : null,\n    isProcessed\n  };\n});\n\nreturn [{ json: { statuses: results } }];"
+        "jsCode": "// Collect all results and extract qualification\nconst results = $input.all().map(item => {\n  const companyId = item.json.companyId || item.json.data?.id?.record_id;\n  const values = item.json.data?.values || {};\n  \n  // Extract qualification from Attio (Yes/No field)\n  const qualField = values.qualification || [];\n  const rawQualification = qualField[0]?.option?.title || qualField[0]?.value || null;\n  \n  // isProcessed = true if qualification has a value (Yes or No)\n  const isProcessed = rawQualification && ['yes', 'no'].includes(rawQualification.toLowerCase());\n  \n  // Normalize to Yes/No with proper casing\n  const qualification = rawQualification ? (rawQualification.toLowerCase() === 'yes' ? 'Yes' : 'No') : null;\n  \n  return {\n    companyId,\n    qualification,\n    isProcessed\n  };\n});\n\nreturn [{ json: { statuses: results } }];"
       },
       "id": "aggregate",
       "name": "Aggregate Results",

@@ -29,17 +29,19 @@ export function useGameLogic() {
         // 3. Mark already-qualified deals as processed
         if (statusData.statuses && statusData.statuses.length > 0) {
           statusData.statuses.forEach(item => {
-            // isProcessed = true means qualification field has a value (yes or no)
+            // isProcessed = true means qualification field has a value (Yes or No)
             if (item.isProcessed && item.qualification) {
               // Find the deal by attioRecordId and add to results
               const deal = data.find(d => d.attioRecordId === item.companyId);
               if (deal) {
                 const existingIndex = results.value.findIndex(r => r.dealId === deal.id);
                 if (existingIndex < 0) {
+                  // Normalize to 'Yes' or 'No' with proper casing
+                  const normalizedQual = item.qualification.toLowerCase() === 'yes' ? 'Yes' : 'No';
                   results.value.push({
                     dealId: deal.id,
                     attioRecordId: item.companyId,
-                    status: item.qualification, // 'yes' or 'no'
+                    status: normalizedQual,
                     fromAttio: true // Flag to indicate this came from Attio
                   });
                 }
