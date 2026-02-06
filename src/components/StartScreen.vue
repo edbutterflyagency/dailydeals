@@ -24,7 +24,7 @@ defineEmits(['start']);
 
     <div class="content">
       <h1 class="title">Challenge du Jour</h1>
-      <p class="subtitle">T'es prêt à exploser tes quotas ?</p>
+      <p class="subtitle">Round 1. Fight! 🥊</p>
 
       <div class="challenge-box card">
         <div class="objective">
