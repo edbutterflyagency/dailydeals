@@ -14,11 +14,14 @@ const props = defineProps({
 });
 
 defineEmits(['start']);
+
+const hasBackground = computed(() => !!copy.backgroundImage);
+const bgStyle = computed(() => hasBackground.value ? { '--bg-image': `url(${copy.backgroundImage})` } : {});
 </script>
 
 <template>
-  <div class="start-screen" :style="{ '--bg-image': `url(${copy.backgroundImage})` }">
-    <div class="background-overlay"></div>
+  <div class="start-screen" :class="{ 'has-bg': hasBackground }" :style="bgStyle">
+    <div v-if="hasBackground" class="background-overlay"></div>
     <div class="glow-container">
       <div class="glow-circle blue"></div>
       <div class="glow-circle purple"></div>
@@ -55,6 +58,9 @@ defineEmits(['start']);
   padding: 2rem;
   position: relative;
   overflow: hidden;
+}
+
+.start-screen.has-bg {
   background-image: var(--bg-image);
   background-size: cover;
   background-position: center bottom;
@@ -120,27 +126,44 @@ defineEmits(['start']);
   font-size: 3.5rem;
   font-weight: 900;
   margin: 0;
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.1;
+}
+
+.has-bg .title {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-shadow: 0 4px 20px rgba(251, 191, 36, 0.3);
 }
 
 .subtitle {
   font-size: 1.5rem;
-  color: #fff;
+  color: #64748b;
   margin: 1rem 0 3rem;
+  font-weight: 500;
+}
+
+.has-bg .subtitle {
+  color: #fff;
   font-weight: 700;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .challenge-box {
-  background: rgba(255, 255, 255, 0.95);
+  background: white;
   border-radius: 24px;
   padding: 1.5rem;
   margin-bottom: 3rem;
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+}
+
+.has-bg .challenge-box {
+  background: rgba(255, 255, 255, 0.95);
   box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
   border: 3px solid #fbbf24;
 }
