@@ -17,7 +17,8 @@ defineEmits(['start']);
 </script>
 
 <template>
-  <div class="start-screen">
+  <div class="start-screen" :style="{ '--bg-image': `url(${copy.backgroundImage})` }">
+    <div class="background-overlay"></div>
     <div class="glow-container">
       <div class="glow-circle blue"></div>
       <div class="glow-circle purple"></div>
@@ -54,6 +55,24 @@ defineEmits(['start']);
   padding: 2rem;
   position: relative;
   overflow: hidden;
+  background-image: var(--bg-image);
+  background-size: cover;
+  background-position: center bottom;
+  background-repeat: no-repeat;
+}
+
+.background-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.7) 0%,
+    rgba(15, 23, 42, 0.85) 100%
+  );
+  z-index: 0;
 }
 
 .glow-container {
@@ -101,26 +120,29 @@ defineEmits(['start']);
   font-size: 3.5rem;
   font-weight: 900;
   margin: 0;
-  background: linear-gradient(135deg, #1e293b 0%, #334155 100%);
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
   line-height: 1.1;
+  text-shadow: 0 4px 20px rgba(251, 191, 36, 0.3);
 }
 
 .subtitle {
   font-size: 1.5rem;
-  color: #64748b;
+  color: #fff;
   margin: 1rem 0 3rem;
-  font-weight: 500;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 }
 
 .challenge-box {
-  background: white;
+  background: rgba(255, 255, 255, 0.95);
   border-radius: 24px;
   padding: 1.5rem;
   margin-bottom: 3rem;
-  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.1);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.3);
+  border: 3px solid #fbbf24;
 }
 
 .objective {

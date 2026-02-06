@@ -18,7 +18,9 @@ export const startScreen = {
   title: "READY? 🎮",
   subtitle: "Round 1. Fight! 🥊",
   dealCountLabel: "Challengers",
-  startButton: "INSERT COIN 🕹️"
+  startButton: "INSERT COIN 🕹️",
+  // Fond d'écran (Ryu's stage - SF2)
+  backgroundImage: "https://i.imgur.com/QH9xLcP.gif"
 };
 
 // ============================================
