@@ -1,4 +1,6 @@
 <script setup>
+import { sidebar as copy } from '../data/copy';
+
 defineProps({
   deals: {
     type: Array,
@@ -29,16 +31,16 @@ const isProcessed = (dealId, results) => {
   <aside class="sidebar" :class="{ 'mobile-open': isMobileOpen }">
     <div class="sidebar-header">
       <div class="logo-area">
-        <span class="logo-icon">🦋</span>
-        <span class="logo-text">DealFlow</span>
+        <span class="logo-icon">{{ copy.logoIcon }}</span>
+        <span class="logo-text">{{ copy.logoText }}</span>
       </div>
-      <div class="week-label">Week #42</div>
+      <div class="week-label">{{ copy.weekLabel }}</div>
     </div>
 
     <!-- Progress Tracker -->
     <div class="progress-section">
       <div class="progress-info">
-        <span class="progress-title">Progression</span>
+        <span class="progress-title">{{ copy.progressTitle }}</span>
         <span class="progress-count">{{ results.length }} / {{ deals.length }}</span>
       </div>
       <div class="progress-bar-bg">
@@ -50,7 +52,7 @@ const isProcessed = (dealId, results) => {
     </div>
 
     <nav class="nav-list">
-      <div class="nav-section-label">Deals à qualifier</div>
+      <div class="nav-section-label">{{ copy.sectionLabel }}</div>
       
       <button 
         v-for="(deal, index) in deals" 

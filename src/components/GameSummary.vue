@@ -1,6 +1,7 @@
 <script setup>
 import confetti from 'canvas-confetti';
 import { onMounted } from 'vue';
+import { gameSummary as copy } from '../data/copy';
 
 defineProps({
   score: Number,
@@ -42,43 +43,40 @@ onMounted(() => {
     <div class="header">
       <div class="celebration-gif">
         <img 
-          src="https://media.giphy.com/media/g9582DNuQppxC/giphy.gif" 
+          :src="copy.celebrationGif" 
           alt="Celebration"
         />
       </div>
-      <h2>Semaine bouclée ! 🎯</h2>
-      <p class="subtitle">Tu as qualifié tous les deals de la semaine.</p>
+      <h2>{{ copy.title }}</h2>
+      <p class="subtitle">{{ copy.subtitle }}</p>
     </div>
 
     <!-- Score Card -->
     <div class="score-card">
-      <div class="score-label">Deals qualifiés</div>
+      <div class="score-label">{{ copy.scoreLabel }}</div>
       <div class="score-value">{{ total }} <span class="total">/ {{ total }}</span></div>
-      <div class="score-meta">100% de completion 🔥</div>
+      <div class="score-meta">{{ copy.completionText }}</div>
     </div>
 
     <!-- Stats -->
     <div class="stats-grid">
       <div class="stat-item">
-        <div class="stat-icon">✅</div>
+        <div class="stat-icon">{{ copy.stat1Icon }}</div>
         <div class="stat-value">{{ total }}</div>
-        <div class="stat-label">Décisions prises</div>
+        <div class="stat-label">{{ copy.stat1Label }}</div>
       </div>
       <div class="stat-item">
-        <div class="stat-icon">🚀</div>
+        <div class="stat-icon">{{ copy.stat2Icon }}</div>
         <div class="stat-value">{{ total }}</div>
-        <div class="stat-label">Statuts mis à jour</div>
+        <div class="stat-label">{{ copy.stat2Label }}</div>
       </div>
     </div>
 
-    <div class="footer-msg">
-      Les statuts ont été synchronisés avec Attio.<br/>
-      Rendez-vous lundi prochain pour les nouveaux deals !
-    </div>
+    <div class="footer-msg" v-html="copy.footerMessage"></div>
 
     <div class="summary-footer">
       <button class="btn btn-secondary back-btn" @click="$emit('restart')">
-        ← Retour aux deals
+        {{ copy.backButton }}
       </button>
     </div>
   </div>

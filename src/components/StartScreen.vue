@@ -1,5 +1,6 @@
 <script setup>
 import { computed } from 'vue';
+import { startScreen as copy } from '../data/copy';
 
 const props = defineProps({
   dealCount: {
@@ -23,20 +24,20 @@ defineEmits(['start']);
     </div>
 
     <div class="content">
-      <h1 class="title">Challenge du Jour</h1>
-      <p class="subtitle">Round 1. Fight! 🥊</p>
+      <h1 class="title">{{ copy.title }}</h1>
+      <p class="subtitle">{{ copy.subtitle }}</p>
 
       <div class="challenge-box card">
         <div class="objective">
           <div class="count-bubble">{{ dealCount }}</div>
           <div class="text">
-            <strong>Deals à qualifier</strong>
+            <strong>{{ copy.dealCountLabel }}</strong>
           </div>
         </div>
       </div>
 
       <button class="start-btn pulse" @click="$emit('start')">
-        C'est parti ! 🚀
+        {{ copy.startButton }}
       </button>
     </div>
   </div>

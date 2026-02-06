@@ -6,7 +6,7 @@ import GameSummary from './components/GameSummary.vue';
 import StartScreen from './components/StartScreen.vue';
 import Snackbar from './components/Snackbar.vue';
 import { useGameLogic } from './composables/useGameLogic';
-import { getRandomMessage } from './data/victoryMessages';
+import { getRandomVictoryMessage } from './data/copy';
 
 const { 
   weeklyDeals,
@@ -36,7 +36,7 @@ const snackbarMessage = ref('');
 
 const handleDecision = (decision) => {
   submitDecision(decision);
-  snackbarMessage.value = getRandomMessage();
+  snackbarMessage.value = getRandomVictoryMessage();
   showSnackbar.value = true;
 };
 
