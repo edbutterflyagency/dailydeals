@@ -117,6 +117,17 @@ const isFrance = computed(() => props.deal.countryCode === 'FR');
       </div>
     </div>
 
+    <!-- Events Attended - Always visible -->
+    <div v-if="deal.eventsAttended?.length" class="events-banner">
+      <span class="events-icon">🎫</span>
+      <div class="events-content">
+        <span class="events-label">Événements</span>
+        <div class="events-list">
+          <span v-for="event in deal.eventsAttended" :key="event" class="event-tag">{{ event }}</span>
+        </div>
+      </div>
+    </div>
+
     <!-- Contact Warning -->
     <div v-if="!deal.hasContact" class="warning-banner">
       <span class="warning-icon">⚠️</span>
@@ -348,6 +359,52 @@ const isFrance = computed(() => props.deal.countryCode === 'FR');
 
 .metric-value.highlight {
   color: var(--accent-primary);
+}
+
+/* Events Banner */
+.events-banner {
+  background: linear-gradient(135deg, #eff6ff 0%, #f0f9ff 100%);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  border-bottom: 1px solid #bfdbfe;
+}
+
+.events-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.events-content {
+  flex: 1;
+}
+
+.events-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  color: #3b82f6;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.events-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.event-tag {
+  background: white;
+  color: #1e40af;
+  font-size: 0.85rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 8px;
+  border: 1px solid #93c5fd;
+  box-shadow: 0 1px 3px rgba(59, 130, 246, 0.1);
 }
 
 /* Warning */
@@ -596,6 +653,20 @@ const isFrance = computed(() => props.deal.countryCode === 'FR');
 
   .metric-value {
     font-size: 1rem;
+  }
+
+  /* Events */
+  .events-banner {
+    padding: 0.875rem 1.25rem;
+  }
+
+  .events-icon {
+    font-size: 1.25rem;
+  }
+
+  .event-tag {
+    font-size: 0.8rem;
+    padding: 5px 10px;
   }
 
   /* Warning */
